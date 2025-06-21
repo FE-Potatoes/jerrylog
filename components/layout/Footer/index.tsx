@@ -7,8 +7,8 @@ import Link from 'next/link';
 
 export default function Footer() {
   return (
-    <footer className="pb-8 text-sm text-neutral-800 dark:text-neutral-400">
-      <div className="max-w-content text-second mx-auto mb-1 flex justify-end gap-4 text-end font-serif text-sm">
+    <footer className="pb-8 text-sm">
+      <div className="max-w-content mx-auto mb-1 flex justify-end gap-4 text-end font-serif text-sm">
         {Object.keys(siteConfig.author.contacts).map((contactKey) => {
           const contactValue =
             siteConfig.author.contacts[
@@ -24,7 +24,7 @@ export default function Footer() {
           );
         })}
       </div>
-      <div className="max-w-content text-second mx-auto text-end font-serif text-sm">
+      <div className="max-w-content mx-auto text-end font-serif text-sm">
         Copyright ©{' '}
         <Link className="link" href="/">
           JerryChu blog{' '}
