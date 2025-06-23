@@ -1,18 +1,20 @@
+import BaseFont from '@/components/base/BaseFont';
+import Footer from '@/components/layout/Footer';
+import Header from '@/components/layout/Header';
 import MainLayout from '@/components/layout/MainLayout';
 import CoreProvider from '@/providers/CoreProvider';
+import { cn } from '@/utils/cn';
 import type { Metadata } from 'next';
-import { Geist, Geist_Mono } from 'next/font/google';
+import { Caveat, Inter } from 'next/font/google';
 
 import '../styles/global.css';
 
-const geistSans = Geist({
-  variable: '--font-geist-sans',
+const caveatFont = Caveat({
+  variable: '--font-caveat',
+  weight: ['400', '500', '600', '700'],
   subsets: ['latin'],
-});
-
-const geistMono = Geist_Mono({
-  variable: '--font-geist-mono',
-  subsets: ['latin'],
+  display: 'swap',
+  preload: true,
 });
 
 export const metadata: Metadata = {
@@ -27,11 +29,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+      <head>
+        <BaseFont />
+      </head>
+      <body className={cn(caveatFont.variable)}>
         <CoreProvider>
+          <Header />
           <MainLayout>{children}</MainLayout>
+          <Footer />
         </CoreProvider>
       </body>
     </html>
