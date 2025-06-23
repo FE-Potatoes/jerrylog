@@ -1,5 +1,7 @@
+import React from 'react';
+
 import { siteConfig } from '@/app/config';
-import ThemeButton from '@/components/ThemeButton';
+import ThemeButton from '@/components/common/ThemeButton';
 import Image, { StaticImageData } from 'next/image';
 import Link from 'next/link';
 
@@ -26,25 +28,25 @@ const LogoLink = ({ href, width, height, src }: LogoLink) => {
 
 const NAV_LINKS = siteConfig.menus;
 
-export default function Header() {
+const Header = React.memo(() => {
   return (
-    <nav className="flex w-full items-center justify-between pt-8 pb-12 select-none">
-      <div>
+    <header className="flex w-full items-center justify-between pt-4 pb-8 select-none">
+      <nav className="flex gap-4">
         {NAV_LINKS.map((item) => {
           return (
             <Link
-              key={item.href}
+              key={item.label}
               href={item.href}
-              className="ml-4 text-sm font-semibold"
+              className={'font-caveat text-xl'}
             >
               {item.label}
             </Link>
           );
         })}
-      </div>
-      <div>
-        <ThemeButton />
-      </div>
-    </nav>
+      </nav>
+      <ThemeButton />
+    </header>
   );
-}
+});
+
+export default Header;
