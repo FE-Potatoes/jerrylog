@@ -1,14 +1,14 @@
-import Footer from '../Footer';
-import Header from '../Header';
+import FloatingHeader from '@/components/common/FloatingHeader';
 
 export default function MainLayout({
   children,
-}: Readonly<{ children: React.ReactNode }>) {
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
   return (
-    <div className="mx-auto max-w-3xl px-6 lg:max-w-6xl lg:px-8">
-      <Header />
-      <main className="relative pb-16">{children}</main>
-      <Footer />
-    </div>
+    <main className="relative pb-16">
+      <FloatingHeader />
+      {children}
+    </main>
   );
 }
