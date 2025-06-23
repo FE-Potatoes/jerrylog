@@ -1,7 +1,23 @@
 @import './theme.css';
 
+html {
+  scrollbar-gutter: stable;
+  font-size: var(--text-baseSize);
+}
+
 body {
   width: 100%;
-  height: 100vh;
+  min-height: 100vh;
   background-color: var(--color-background);
+  padding-left: var(--container-contentMarginLeft);
+  padding-right: var(--container-contentMarginRight);
+  margin: 0 auto;
+  color: var(--color-text);
+  line-height: calc(var(--spacing) * 7);
+}
+
+@media (min-width: 768px) {
+  body {
+    max-width: var(--container-contentWidth);
+  }
 }

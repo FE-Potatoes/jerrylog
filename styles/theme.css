@@ -1,11 +1,46 @@
 @import 'tailwindcss';
 
 :root {
-  --color-background: #fff;
+  --text-baseSize: calc(1rem + 0.25vw);
+  --color-background: #f5f5f5;
   --color-text: #000;
+  --color-secondary: #363636;
+  --color-thirdary: #e5e7eb;
 }
 
 .dark {
-  --color-background: #141414;
-  --color-text: #fff;
+  --color-background: #1e1e1e;
+  --color-text: #f8f9fa;
+  --color-secondary: #a3a3a3;
+  --color-thirdary: #484848;
+}
+
+@theme {
+  /* font */
+  --font-caveat: 'Caveat', cursive;
+  --font-arita: 'Arita Buri';
+
+  /* layout */
+  --container-contentWidth: 46rem;
+  --container-contentMarginLeft: max(24px, env(safe-area-inset-left));
+  --container-contentMarginRight: max(24px, env(safe-area-inset-right));
+
+  /* color */
+  --color-background: var(--color-background);
+  --color-secondary: var(--color-secondary);
+  --color-thirdary: var(--color-thirdary);
+}
+
+@layer utilities {
+  .pr-content {
+    padding-right: var(--container-contentMarginRight);
+  }
+
+  .pl-content {
+    padding-left: var(--container-contentMarginLeft);
+  }
+
+  .font-caveat {
+    font-family: var(--font-caveat), var(--font-arita);
+  }
 }
