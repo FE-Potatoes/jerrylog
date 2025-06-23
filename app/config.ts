@@ -20,10 +20,10 @@ export const siteConfig = {
   menus: [
     {
       href: '/',
-      label: '🐹',
+      label: '🏖️',
     },
     {
-      href: '/about',
+      href: '/',
       label: 'About',
     },
     {
