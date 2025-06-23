@@ -11,7 +11,7 @@ export default function IconButton({
       {...props}
       type={type}
       className={cn(
-        'flex h-9 w-9 items-center justify-center rounded-lg transition-all',
+        'flex h-9 w-9 cursor-pointer items-center justify-center rounded-lg transition-all',
         'text-secondary hover:bg-secondary',
         className,
       )}

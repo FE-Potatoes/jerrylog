@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 
 import { useTheme } from 'next-themes';
 
-import IconButton from '../common/IconButton';
+import IconButton from './IconButton';
 
 export default function ThemeButton() {
   const { theme, systemTheme, setTheme } = useTheme();
@@ -20,7 +20,7 @@ export default function ThemeButton() {
     setMounted(true);
   }, []);
 
-  if (!mounted) return null; // SSR과 hydration mismatch 방지
+  if (!mounted) return null;
   return (
     <IconButton aria-label="Toggle Dark Mode" onClick={handleThemeChange}>
       <svg
