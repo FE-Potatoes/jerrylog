@@ -1,23 +1,31 @@
 @import './theme.css';
 
-html {
-  scrollbar-gutter: stable;
-  font-size: var(--text-baseSize);
-}
+@layer base {
+  html {
+    scrollbar-gutter: stable;
+    font-size: var(--text-baseSize);
+  }
 
-body {
-  width: 100%;
-  min-height: 100vh;
-  background-color: var(--color-background);
-  padding-left: var(--container-contentMarginLeft);
-  padding-right: var(--container-contentMarginRight);
-  margin: 0 auto;
-  color: var(--color-text);
-  line-height: calc(var(--spacing) * 7);
-}
-
-@media (min-width: 768px) {
   body {
-    max-width: var(--container-contentWidth);
+    width: 100%;
+    min-height: 100vh;
+    background-color: var(--color-background);
+    padding-left: var(--container-contentMarginLeft);
+    padding-right: var(--container-contentMarginRight);
+    margin: 0 auto;
+    color: var(--color-text);
+    line-height: calc(var(--spacing) * 7);
+  }
+
+  @media (min-width: 768px) {
+    body {
+      max-width: var(--container-contentWidth);
+    }
+  }
+
+  h1 {
+    font-family: var(--font-caveat), var(--font-arita);
+    font-size: 1.5rem;
+    line-height: 1.75rem;
   }
 }

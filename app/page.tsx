@@ -1,23 +1,26 @@
 import Post, { PostProps } from '@/components/home/Post';
-import Image from 'next/image';
+import PostsLayout from '@/components/layout/PostsLayout';
 
 const posts: PostProps[] = [
   {
+    name: '1.mdx',
     title: '컴포넌트 Lazy Loading, prefetch로 최적화하기',
     date: '2025.05.11',
-    imageSrc: '/images/1.webp',
+    imageSrc: '/images/home/1.webp',
     category: 'dev',
   },
   {
+    name: '2.mdx',
     title: '컴포넌트 Lazy',
     date: '2025.05.11',
-    imageSrc: '/images/2.webp',
+    imageSrc: '/images/home/2.webp',
     category: 'life',
   },
   {
+    name: '3.mdx',
     title: '컴포넌트 Loading, prefetch로 최적화하기',
     date: '2025.05.11',
-    imageSrc: '/images/3.webp',
+    imageSrc: '/images/home/3.webp',
     category: 'dev',
   },
 ];
@@ -25,9 +28,7 @@ const posts: PostProps[] = [
 export default function Home() {
   return (
     <div className="flex flex-col">
-      <h1 className="text-heading font-caveat mb-4 text-2xl leading-7">
-        경훈 ﹒ JerryChu
-      </h1>
+      <h1 className="mb-4">경훈 ﹒ JerryChu</h1>
       <div className="font-arita text-secondary mb-8">
         <p>
           화려하기보다는 직관적인 UI, 복잡하기보다는 이해하기 쉬운 코드를
@@ -39,12 +40,13 @@ export default function Home() {
         </p>
       </div>
       <h2 className="font-caveat mb-4 text-3xl">Recent Post</h2>
-      <div className="flex flex-col gap-6 md:grid md:grid-cols-3">
+      <PostsLayout>
         {posts.map((item) => {
-          const { title, date, imageSrc, category } = item;
+          const { name, title, date, imageSrc, category } = item;
           return (
             <Post
-              key={title}
+              key={name}
+              name={name}
               title={title}
               date={date}
               imageSrc={imageSrc}
@@ -52,7 +54,7 @@ export default function Home() {
             />
           );
         })}
-      </div>
+      </PostsLayout>
     </div>
   );
 }
