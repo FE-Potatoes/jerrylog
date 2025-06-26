@@ -27,11 +27,11 @@ export const siteConfig = {
       label: 'About',
     },
     {
-      href: '/dev',
+      href: '/blog/dev',
       label: 'Dev',
     },
     {
-      href: '/life',
+      href: '/blog/life',
       label: 'Life',
     },
   ],

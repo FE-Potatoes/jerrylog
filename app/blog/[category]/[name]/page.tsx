@@ -1,13 +1,23 @@
-import { getPosts } from '@/constants/dataset';
+import { calGetPosts } from '@/constants/dataset';
 
 export default async function Page({
   params,
 }: {
-  params: Promise<{ name: string }>;
+  params: Promise<{ name: string; category: 'dev' | 'life' }>;
 }) {
-  const { name } = await params;
-  const { default: Mdx, metadata } = await import(`@/public/blog/dev/${name}`);
-  const { title, description, image, date, category, author } = metadata;
+  const { name, category } = await params;
+  const { default: Mdx, metadata } = await import(
+    `@/public/blog/${category}/${name}.mdx`
+  );
+
+  const {
+    title,
+    description,
+    image,
+    date,
+    author,
+    category: fileCategory,
+  } = metadata;
 
   return (
     <article className="post-mdx m-auto mt-[1rem] max-w-[768px] md:mt-[2rem]">
@@ -24,7 +34,7 @@ export default async function Page({
 }
 
 export async function generateStaticParams() {
-  const posts = await getPosts('dev');
+  const posts = await calGetPosts('dev');
   return posts;
 }
 

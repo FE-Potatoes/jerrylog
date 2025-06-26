@@ -1,6 +1,6 @@
+import FloatingHeader from '@/components/common/FloatingHeader';
 import Footer from '@/components/layout/Footer';
 import Header from '@/components/layout/Header';
-import MainLayout from '@/components/layout/MainLayout';
 import { aritaFont, caveatFont, pretendardFont } from '@/constants/font';
 import CoreProvider from '@/providers/CoreProvider';
 import { cn } from '@/utils/cn';
@@ -29,7 +29,10 @@ export default function RootLayout({
       >
         <CoreProvider>
           <Header />
-          <MainLayout>{children}</MainLayout>
+          <main className="relative pb-16">
+            <FloatingHeader />
+            {children}
+          </main>
           <Footer />
         </CoreProvider>
       </body>

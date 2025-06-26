@@ -1,31 +1,16 @@
-import Post, { PostProps } from '@/components/home/Post';
-import PostsLayout from '@/components/layout/PostsLayout';
+import HomePosts from '@/components/home/HomePosts';
+import { calGetAllPosts, calSortTimePosts } from '@/constants/dataset';
 
-const posts: PostProps[] = [
-  {
-    name: '1.mdx',
-    title: '컴포넌트 Lazy Loading, prefetch로 최적화하기',
-    date: '2025.05.11',
-    imageSrc: '/images/home/1.webp',
-    category: 'dev',
-  },
-  {
-    name: '2.mdx',
-    title: '컴포넌트 Lazy',
-    date: '2025.05.11',
-    imageSrc: '/images/home/2.webp',
-    category: 'life',
-  },
-  {
-    name: '3.mdx',
-    title: '컴포넌트 Loading, prefetch로 최적화하기',
-    date: '2025.05.11',
-    imageSrc: '/images/home/3.webp',
-    category: 'dev',
-  },
-];
+export default async function Home() {
+  const allPosts = await calGetAllPosts();
+  const sortAllPosts = calSortTimePosts(allPosts);
 
-export default function Home() {
+  const recentPosts = sortAllPosts.slice(0, 3);
+  const changesImagesPosts = recentPosts.map((info, idx) => ({
+    ...info,
+    imageSrc: `${idx}.webp`,
+  }));
+
   return (
     <div className="flex flex-col">
       <h1 className="mb-4">경훈 ﹒ JerryChu</h1>
@@ -40,21 +25,7 @@ export default function Home() {
         </p>
       </div>
       <h2 className="font-caveat mb-4 text-3xl">Recent Post</h2>
-      <PostsLayout>
-        {posts.map((item) => {
-          const { name, title, date, imageSrc, category } = item;
-          return (
-            <Post
-              key={name}
-              name={name}
-              title={title}
-              date={date}
-              imageSrc={imageSrc}
-              category={category}
-            />
-          );
-        })}
-      </PostsLayout>
+      <HomePosts changesImagesPosts={changesImagesPosts} />
     </div>
   );
 }
