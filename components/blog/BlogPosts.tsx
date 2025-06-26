@@ -8,7 +8,7 @@ import Post from '../common/PostCard';
 export default function BlogPosts({ sortPosts }: { sortPosts: PostMeta[] }) {
   return (
     <div className="flex flex-col gap-6 md:grid md:grid-cols-3">
-      {sortPosts.map((item) => {
+      {sortPosts.map((item: PostMeta) => {
         const { name, title, date, image: imageSrc, category } = item;
 
         return (
