@@ -5,7 +5,7 @@ import { motion } from 'framer-motion';
 
 import Post from '../common/PostCard';
 
-export default function HomePostsLayout({
+export default function HomePosts({
   changesImagesPosts,
 }: {
   changesImagesPosts: PostMeta[];
