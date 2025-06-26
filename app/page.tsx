@@ -8,7 +8,7 @@ export default async function Home() {
   const recentPosts = sortAllPosts.slice(0, 3);
   const changesImagesPosts = recentPosts.map((info, idx) => ({
     ...info,
-    imageSrc: `${idx}.webp`,
+    image: `/images/home/${idx + 1}.webp`,
   }));
 
   return (
