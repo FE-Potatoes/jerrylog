@@ -1,45 +1,12 @@
 import Footer from '@/components/layout/Footer';
 import Header from '@/components/layout/Header';
 import MainLayout from '@/components/layout/MainLayout';
+import { aritaFont, caveatFont, pretendardFont } from '@/constants/font';
 import CoreProvider from '@/providers/CoreProvider';
 import { cn } from '@/utils/cn';
 import type { Metadata } from 'next';
-import { Caveat } from 'next/font/google';
-import localFont from 'next/font/local';
 
 import '../styles/global.css';
-
-const caveatFont = Caveat({
-  variable: '--font-caveat',
-  weight: ['400', '500', '600', '700'],
-  subsets: ['latin'],
-  display: 'swap',
-  preload: true,
-});
-
-const aritaFont = localFont({
-  src: [
-    {
-      path: '../assets/fonts/Arita-buriL.woff2',
-      weight: '300',
-    },
-    {
-      path: '../assets/fonts/Arita-buriM.woff2',
-      weight: '500',
-    },
-    {
-      path: '../assets/fonts/Arita-buriSB.woff2',
-      weight: '600',
-    },
-    {
-      path: '../assets/fonts/Arita-buriB.woff2',
-      weight: '700',
-    },
-  ],
-  variable: '--font-arita',
-  display: 'swap',
-  preload: true,
-});
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -53,7 +20,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={cn(caveatFont.variable, aritaFont.variable)}>
+      <body
+        className={cn(
+          caveatFont.variable,
+          aritaFont.variable,
+          pretendardFont.variable,
+        )}
+      >
         <CoreProvider>
           <Header />
           <MainLayout>{children}</MainLayout>
