@@ -1,4 +1,6 @@
 @import './theme.css';
+@import './prism.css';
+@import './mdx.css';
 
 @layer base {
   html {
@@ -27,5 +29,15 @@
     font-family: var(--font-caveat), var(--font-arita);
     font-size: 1.5rem;
     line-height: 1.75rem;
+  }
+}
+
+@layer utilities {
+  .pr-content {
+    padding-right: var(--container-contentMarginRight);
+  }
+
+  .pl-content {
+    padding-left: var(--container-contentMarginLeft);
   }
 }

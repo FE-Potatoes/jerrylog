@@ -1,7 +1,10 @@
 @import 'tailwindcss';
 
 :root {
+  /* size */
   --text-baseSize: calc(1rem + 0.25vw);
+
+  /* color */
   --color-background: #f5f5f5;
   --color-text: #000;
   --color-secondary: #363636;
@@ -19,6 +22,7 @@
   /* font */
   --font-caveat: 'Caveat', cursive;
   --font-arita: 'Arita Buri';
+  --font-pretandard: 'pretandard';
 
   /* layout */
   --container-contentWidth: 46rem;
@@ -29,18 +33,7 @@
   --color-background: var(--color-background);
   --color-secondary: var(--color-secondary);
   --color-thirdary: var(--color-thirdary);
-}
 
-@layer utilities {
-  .pr-content {
-    padding-right: var(--container-contentMarginRight);
-  }
-
-  .pl-content {
-    padding-left: var(--container-contentMarginLeft);
-  }
-
-  .font-caveat {
-    font-family: var(--font-caveat), var(--font-arita);
-  }
+  /* bg color */
+  --bg-background: var(--color-background);
 }
