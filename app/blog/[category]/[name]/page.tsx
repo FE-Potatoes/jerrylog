@@ -1,4 +1,4 @@
-import { calGetPosts } from '@/constants/dataset';
+import { calGetAllPosts, calGetPosts } from '@/constants/dataset';
 
 export default async function Page({
   params,
@@ -34,8 +34,6 @@ export default async function Page({
 }
 
 export async function generateStaticParams() {
-  const posts = await calGetPosts('dev');
+  const posts = await calGetAllPosts();
   return posts;
 }
-
-export const dynamicParams = false;

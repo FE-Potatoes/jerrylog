@@ -32,7 +32,6 @@ export default function Post({
           alt={title}
           fill
           priority
-          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
         />
       </div>
       <div className="bg-thirdary flex-[1] rounded-b-lg px-4 py-2">
