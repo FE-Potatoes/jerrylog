@@ -1,0 +1,208 @@
+export const metadata = {
+  title:
+    'React 올바르게 key 사용하기 uuid, index, Math.random() 대체 가능할까?',
+  description:
+    '데이터를 패칭해서 화면에 뿌려줄 때 map 메서드를 돌려 화면을 그려줍니다. 이럴 경우 key 값을 설정하지 않는다면 unique key를 설정하라는 에러가 발생하게 되는데 왜 key 값을 설정해야 할까요? 그리고 key 값으로 Math.random(), uuid(), index를 사용해도 될까요?',
+  icon: '',
+  image: '/images/blog/dev/react-key.png',
+  link: 'https://velog.io/@jerrychu/React-%EC%98%AC%EB%B0%94%EB%A5%B4%EA%B2%8C-key-%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0-index-uuid-%EB%8C%80%EC%B2%B4-%EA%B0%80%EB%8A%A5%ED%95%A0%EA%B9%8C',
+  tags: ['React', 'key', 'index', 'map key', 'uuid', '리액트'],
+  category: 'dev',
+  date: '2024-01-26 19:51:17',
+  author: 'JerryChu',
+};
+
+## 🐹 들어가기 앞서
+
+> 데이터를 패칭해서 화면에 뿌려줄 때 map 메서드를 돌려 화면을 그려줍니다. 이럴 경우 key 값을 설정하지 않는다면 unique key를 설정하라는 에러가 발생하게 되는데 왜 key 값을 설정해야 할까요? 그리고 key 값으로 Math.random(), uuid(), index를 사용해도 될까요?
+
+- 잘못된 내용이 있다면 댓글로 알려주시면 감사합니다 !! 😊😊
+
+### 1) 리액트 Diffing Algorithm 이란?
+
+먼저 간단하게 리액트의 `Diffing Algorithm`을 알아봅시다. 리액트는 실제 DOM 객체에 접근하여 조작하는 대신 `Virtual DOM` 객체에 접근해 변화 전과 변화 후를 비교하고 바뀐 부분만 렌더링을 합니다.
+
+여기서 비교 알고리즘은 리액트 `Virtual Dom`에서 두 개의 트리를 비교할 때 사용하는 알고리즘입니다.
+
+자세히 확인하고 싶으시면 아래 링크를 방문해 주세요 !
+
+> https://react.dev/learn/preserving-and-resetting-state
+
+`Virtual DOM` 에서 두 개의 트리를 비교할 때, 리액트는 두 엘리먼트의 루트(root) 엘리먼트부터 비교합니다. 이후의 동작은 루트 엘리먼트의 타입에 따라 달라집니다.
+
+### 다른 타입의 Element인 경우
+
+```tsx
+<ul>
+  <li>첫번째</li>
+  <li>두번째</li>
+  <li>세번째</li>
+</ul>
+
+<div>
+  <li>첫번째</li>
+  <li>두번째</li>
+  <li>세번째</li>
+</div>
+```
+
+위 코드를 보면 **root Element `ul`와 `div` 태그가 다릅니다. 따라서 root Element 타입이 다르기 때문에 리액트는 이전 트리를 버리고 트리를 새롭게 구축합니다.**
+
+즉 `ul`, `div` 태그 속 **`li` 태그들의 결과는 같지만 기존 `li` 태그들은 파괴되고 새것으로 다시 마운트 합니다.**
+
+### 같은 타입의 Element 경우
+
+```tsx
+<div className="before" title="stuff" />
+<div className="after" title="stuff" />
+```
+
+위 코드를 보면 **같은 DOM Element 지만 속성이 다른 경우 같은 속성은 유지시키고 변경된 속성만 갱신합니다.**
+
+위 Element를 보면 title은 같지만 **className만 변경된 것**을 볼 수 있습니다. 따라서 **className만 DOM 노드에서 변경**시킵니다.
+
+```tsx
+<div style={{color: 'red', fontWeight: 'bold'}} />
+<div style={{color: 'green', fontWeight: 'bold'}} />
+```
+
+위 코드를 보면 color만 red → green으로 변경된 것을 볼 수 있습니다. 따라서 스타일도 마찬가지로 **DOM 노드에서 color만 수정하고 fontWeigth는 수정하지 않습니다.**
+
+## 🐹 Diffing Algorithm이 나오게 된 배경
+
+기존 `DOM 트리`를 변환시키는 알고리즘은 n개의 Element를 갖는 트리에 대해 `O(n^3)`의 복잡도를 가지고 있었습니다.
+
+이 알고리즘을 리액트에 적용하게 된다면, 1000개의 Element를 표시하는 작업은 10억 번의 비교 연산을 필요로 하게 되고 비싼 연산으로 구성됩니다.
+
+따라서 리액트는 두 가지 가정에 기반해 `O(n) 복잡도`의 `휴리스틱 알고리즘`을 구현했습니다.
+
+## 🐹 비효율적인 렌더링 예시
+
+```tsx
+<ul>
+  <li>first</li>
+  <li>second</li>
+</ul>
+
+<ul>
+  <li>first</li>
+  <li>second</li>
+  <li>third</li>
+</ul>
+```
+
+root Element가 `ul` 태그로 같고 그 자식인 `li` 태그 third가 추가되었습니다. 이와 같이 `<li>third</li>` 태그를 삽입하는 트리를 구현하면, **좋지 않은 성능을 유발**하게 됩니다.
+
+왜냐하면 li 태그들의 first, second 태그를 유지시켜도 된다는 것을 확인하지 못하고 모든 자식을 변경할 것입니다.
+
+**이런 문제를 해결하기 위해 리액트에서는 key 속성을 지원하고 있습니다.** 만약 자식이 key를 갖고 있다면, **리액트는 key를 사용해 기존의 트리와 변경 후 트리를 비교해 자식 간의 일치를 확인할 수 있습니다.**
+
+```tsx
+<ul>
+  <li key="2015">Duke</li>
+  <li key="2016">Villanova</li>
+</ul>
+
+<ul>
+  <li key="2014">Connecticut</li>
+  <li key="2015">Duke</li>
+  <li key="2016">Villanova</li>
+</ul>
+```
+
+위 코드를 보면 리액트는 key 2015와 2016을 확인해 2014라는 키를 가진 Element 새롭게 생긴 것을 확인할 수 있습니다.
+
+## 🐹 key의 올바른 사용 방법
+
+이렇게 key 값을 왜 사용해야 하는지 알았습니다. 그렇다면 어떤 값을 key 값으로 사용해야 할까요?
+
+> key 값은 유일해야 하고, 예상 가능하고, 변하지 않아야 합니다. 변하는 key를 사용하면 많은 컴포넌트 인스턴스와 DOM 노드를 불필요하게 재생성해 성능이 나빠지거나 자식 컴포넌트의 state가 유실될 수 있습니다.
+> [출처 : React 공식 문서](https://react.dev/learn/preserving-and-resetting-state)
+
+우리는 종종 데이터를 패칭하고 화면에 뿌려줄 때 map 메서드를 사용해 화면을 보여줍니다. 아래 코드를 확인해 봅시다.
+
+```tsx
+const GraphCardList = memo(({ graphInfo }: { graphInfo: ResourceStatus }) => {
+  return (
+    <div className={cx('dashboard-graph-box')}>
+      {grpahInfoArr.map((el, idx) => (
+        <GraphCard
+          key={el.id}
+          graphInfo={graphInfo ? graphInfo[el.name] : { used: -1, total: 0 }}
+        />
+      ))}
+    </div>
+  );
+});
+```
+
+graphInfoArr 이라는 배열을 map 메서드를 돌려 GraphCard에 key 값으로 el.id로 설정해 주었습니다.** key 값은 고유의 값**이어야 하고 여기서 el.id는 고유의 값을 갖고 있기 때문에 알맞게 key 값으로 사용해 주었습니다.
+
+- 그렇다면 만약 key 값을 index로 사용한다면 어떻게 될까요?
+
+여기서 GraphInfoArr이 **재배열되지 않는다면 문제는 없겠지만 재배열 된다면 문제가 발생합니다.** 왜냐하면 key 값을 index로 한다면 **항목의 순서 즉 삽입이나 삭제가 되었을 때 전체적인 key 값이 변경**되기 때문입니다. 그렇기 때문에 **key 값은 요소의 식별자로서 자신의 역할을 하지 못하게 됩니다.**
+
+![UUID 이미지](https://velog.velcdn.com/images/jerrychu/post/ccc5f196-1d50-4a68-a090-4f80bfc7bf9f/image.png)
+
+저 같은 경우 백엔드에서 고유의 값을 내려줄 수 있다면 백엔드 개발자분께 요청드리는 편이고, 그렇지 않는다면 UUID를 사용합니다. UUID란?
+
+범용 고유 식별자로 소프트웨어 구축에 사용하는 식별자 표준입니다. UUID 같은 경우 고유성을 완벽하게 보장할 수는 없지만 실제 사용 속에서 거의 중복될 가능성이 없어 많이 사용하고 있습니다.
+
+> Math.random()은 암화학적으로 안전한 난수를 제공하지 않기에, 보안과 관련된 어떤 것에도 이 함수를 사용해서는 안 됩니다. 그 대신 Web Crypto API `[window.crypto.getRandomValues()]` 메서드를 이용하여야 합니다.
+> [출처 : MDN](https://developer.mozilla.org/ko/docs/Web/API/Crypto/getRandomValues)
+
+실제로 많은 분들께서 UUID 라이브러리를 사용하고 있는데 문제점을 발견했습니다. 리액트는 Stable 키를 기대하는데 Stable한 키를 사용하기 위해서는 키를 한 번 할당해야 하고 목록의 모든 항목이 매번 동일한 키를 받아야 됩니다.
+
+이렇게 한다면 리액트가 `Virtual DOM`을 만들고 판단할 때 변경 사항에 대해 최적화가 가능합니다. 따라서 **UUID를 사용할 때는 Render() 함수에서 사용하는 것이 아닌 데이터를 다루는 곳에서 사용해야 합니다.** 코드로 한번 살펴보겠습니다.
+
+```tsx
+const dataArr: User[] = [
+    {
+      name: 'chu',
+    },
+    {
+      name: 'kim',
+    },
+    {
+      name: 'lee',
+    },
+  ];
+  const userArr = useMemo(() => {
+    return dataArr.map((el) => {
+      return { ...el, id: uuidv4() };
+    });
+  }, []);
+
+  const [isRender, setRender] = useState(false);
+  const onClickHandler = () => {
+    console.log('userArr : ', userArr);
+    setRender(!isRender);
+  };
+
+  return (
+    <div className={cx('login-page')}>
+      {userArr.map((el) => (
+        <p key={uuidv4()}>
+          {el.name} uuid : {uuidv4()}
+        </p>
+      ))}
+      <button onClick={onClickHandler}>리렌더링</button>
+    </div>
+  );
+```
+
+![UUID예시](https://velog.velcdn.com/images/jerrychu/post/417f9250-f119-43bb-8683-b1d5647fd96c/image.gif)
+
+위와 같이 코드를 작성하였을 때 버튼을 클릭할 때마다 isRender 상태 값이 변경되며 리렌더링 됩니다. Render() 함수에서 직접적으로 uuidv4()를 사용하게 되면 값이 변하는 것을 보실 수 있고 Render() 함수 속이 아닌 데이터를 다루는 곳에서 useMemo에 dependency 빈배열로 두고 uuidv4()를 실행하게 된다면 값이 변하지 않는 것을 볼 수 있습니다.
+
+> 즉 uuidv4() 함수를 key 값에서 사용하게 된다면 render() 함수 속에서 사용하는 것이 아닌 데이터를 다루는 곳에서 사용해서 key 값이 변하지 않게 해야 합니다.
+
+## 🐹 결론
+
+- 리액트에서 배열의 key 값을 설정할 때는 고유한 값들을 가지고 있어야 합니다. virtual dom이 key 값을 캐치해서 두 요소의 차이점이 있을 때 DOM을 변화하는데 키 값이 존재할 경우 자식 Element를 모두 파괴하지 않고 변경된 것만 새로 마운트 합니다.
+- key 값으로 index가 아닌 고유의 값을 사용합니다.
+- key 값으로 Math.random() 보다는 UUID를 사용하고 UUID를 사용할 경우 render() 함수 내에서 직접적으로 사용하지 않고 데이터를 다루는 화면에서 설정 후에 사용합니다.
+
+## 🐹 Reference
+
+- https://react.dev/learn/preserving-and-resetting-state

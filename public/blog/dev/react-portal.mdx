@@ -1,0 +1,164 @@
+export const metadata = {
+  title: '[React] React Portal 사용 이유와 방법',
+  description:
+    '사실 이전에 React Portal을 들어보았지만 굳이 적용할 필요를 느끼지 못했다. 나에게 포탈이란 메이플스토리 포탈뿐... 출퇴근 포탈이나 생겨줬으면 좋겠다는 생각뿐이었다. 그러던 중 최근 FCP를 줄이는 방법을 알아보았다. 프로젝트에서 꽤 많은 모달이 초기에 렌더링 되고 있었고, 이것을 해결하기 위해 각각의 페이지 컴포넌트 속에서 모달을 Pre-loading을 하고, 리액트 포탈로 사용하면 FCP가 단축될 것이라고 생각하며 다시 공부하기 시작했다. 공부를 하며 "React Portal 을 사용하는 이유와 장단점이 또 뭐가 있을까?" 라는 생각이 들었고 이 부분을 정리하며 글을 쓴다.',
+  icon: '',
+  image: '/images/blog/dev/react-portal.gif',
+  link: 'https://velog.io/@jerrychu/React-React-Portal-%EC%82%AC%EC%9A%A9-%EC%9D%B4%EC%9C%A0%EC%99%80-%EB%B0%A9%EB%B2%95',
+  tags: [
+    'Portal',
+    'React',
+    'React-Portal',
+    'modal',
+    '리액트',
+    '리액트 포탈',
+    '모달',
+  ],
+  category: 'dev',
+  date: '2023-12-03 13:50:27',
+  author: 'JerryChu',
+};
+
+## 🐹 들어가기 앞서
+
+> 사실 이전에 React Portal을 들어보았지만 굳이 적용할 필요를 느끼지 못했다. 나에게 포탈이란 메이플스토리 포탈뿐... 출퇴근 포탈이나 생겨줬으면 좋겠다는 생각뿐이었다. 그러던 중 최근 FCP를 줄이는 방법을 알아보았다. 프로젝트에서 꽤 많은 모달이 초기에 렌더링 되고 있었고, 이것을 해결하기 위해 각각의 페이지 컴포넌트 속에서 모달을 Pre-loading을 하고, 리액트 포탈로 사용하면 FCP가 단축될 것이라고 생각하며 다시 공부하기 시작했다. 공부를 하며 'React Portal 을 사용하는 이유와 장단점이 또 뭐가 있을까?' 라는 생각이 들었고 이 부분을 정리하며 글을 쓴다.
+
+### 1) 리액트 포탈을 사용하는 이유가 무엇일까요?
+
+- 리액트는 부모 컴포넌트가 렌더링 되면 자식 컴포넌트가 렌더링 되는 `Tree 구조`를 가지고 있다. 이런 Tree 구조는 종종 불편함을 가지게 되는데 부모-자식 관계를 가지고 있어 **DOM 계층 구조에 영향을 미치게 된다.** 하지만 리액트 포탈을 사용하면 **독립적인 위치에서 렌더링하기 때문에 편리하게 사용**이 가능하다. 대표적인 예로 `스타일링이 간편하다.` 독립적인 위치에서 렌더링 하게 된다면 `overflow: hidden, z-index` 와 같은 속성을 부모 컴포넌트에 영향을 받지 않도록 할 수 있다. 따라서 리액트 포탈을 사용하면 스타일링을 간편하게 사용 가능하고 이런 `독립된 스타일링은 유지 보수성을 향상시키고 CSS 충돌을 방지한다.`
+
+### 2) React Portal 이란?
+
+공식문서에서 Portal은 부모 컴포넌트의 Dom 계층 구조 바깥에 있는 Dom 노드로 자식을 렌더링하는 최고의 방법을 제공라고 적혀있다. 이게 무슨 뜻을까? 이 문장을 이해하기 전에 React Portal의 사용 방법을 알아보자.
+
+## 🐹 React Portal의 사용 방법
+
+### 1) index.html
+
+```
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests" />
+    <title>리액트포탈</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <aside id="aside-root"></aside>
+  </body>
+</html>
+```
+
+### 2) Home.tsx
+
+```
+import { createPortal } from 'react-dom';
+
+<div>
+  <p>리액트 포탈을 사용하려고 합니다.</p>
+  {createPortal(
+    <p>리액트 포탈의 모달 컴포넌트</p>,
+    document.getElementById('aside-root')
+  )}
+</div>
+```
+
+### 3) createPortal()
+
+`ReactDOM.createPortal(child, container, key)` 포탈을 생성하려면 createPortal을 호출해야 한다. 첫 번째 파라미터 child는 React로 렌더링 가능한 모든 것이 들어간다. 예로 `<div></div>`, `<ChildComponent />`, Fragment `<></>`, 문자열, 숫자 등이 있다. 두 번째 파라미터 container는 document.getElementById()로 설정한 DOM 엘리먼트이다. html 파일에 만들어둔 Dom element를 설정한다. 세번째 파라미터는 옵션인데 포털의 키로 사용할 고유의 문자와 숫자 key 값이다. 나는 따로 ReactPortal.tsx 파일을 만들어 이런 방식으로 사용했다.
+
+![리액트 포탈 커스텀](https://velog.velcdn.com/images/jerrychu/post/282c75f7-ad47-4f8a-b862-8cd53903d456/image.png)
+
+이렇게 사용하게 되면 index.html에 만들어둔 aside-root 태그 속으로 내가 지정한 SimpleModal이 modalOpen 되었을 때 텔레포트 하게 된다. 그럼 React Portal의 특징을 알아보자.
+
+## 🐹 React Portal 특징
+
+### 1) Portal을 사용해 컴포넌트를 설정한 Dom element로 텔레포트
+
+Portal 을 사용하면 모달의 DOM을 다른 위치로 텔레포트 시킬 수 있다. 즉 다른 위치로 렌더링이 가능하다는 말이다. 위 코드를 보면 원래는 ReactPortal 태그의 코드가 Home.tsx 속에 위치해야겠지만 DOM element인 root = document.getElementById('asid-root')로 이동 시킨다. 아래 동영상을 보며확인해보자.
+
+![리액트 포탈 영상](https://velog.velcdn.com/images/jerrychu/post/000da994-7517-4bf9-bfa8-6593b5805ac3/image.gif)
+
+영상을 확인해보면 Home.tsx 밑에 있어야 할 모달 컴포넌트가 asid-root로 이동한 것을 볼 수 있다. 즉 이런 방법을 통해 모달, 팝업, 툴팁 등을 외부에 표시 가능하다.
+
+> React Portal을 사용한 Home.tsx 자식 SimpleModal 컴포넌트는 Home.tsx의 자식 노드의 역할을 하고 오직 물리적 배치만 aside-root로 변경한다. 즉, 리액트 포탈을 사용한 자식 컴포넌트는 **부모 컴포넌트 트리가 제공하는 컨텍스트에 접근이 가능하고 이벤트는 여전히 React tree에 따라 자식에서 부모로 버블링** 된다.
+
+### 2) 포탈에 렌더링된 컴포넌트는 DOM에서 부모 JSX 요소에 포함되지 않음.
+
+포탈을 사용하지 않는 모달인 경우 부모의 JSX 요소에 영향을 받아 스타일링 시에 문제가 생길 수도 있다. 하지만 **리액트 포탈을 사용할 경우 부모 컴포넌트의 스타일링에 영향을 받지 않는다.** 따라서 스타일을 단독적으로 좀 더 쉽게 설정이 가능하다.
+
+> 여기서 중요한 점이 있다. 포털을 사용할 때 사용자가 웹앱에 접근이 가능한지 확인하는 것이 중요하다. 예로 사용자가 포털 안밖으로 초점을 이동 가능하게 키보드 포커스 관리를 잘 하는 것이 중요하다.
+
+아래 코드를 보며 알아보자.
+
+#### App.js
+
+```
+import NoPortalExample from "./NoPortalExample";
+import PortalExample from "./PortalExample";
+
+const App = () => {
+  return (
+    <>
+      <div className="modal-container">
+        <NoPortalExample />
+      </div>
+      <div className="modal-container">
+        <PortalExample />
+      </div>
+    </>
+  );
+};
+
+export default App;
+```
+
+#### style.css
+
+```
+.modal-container {
+  position: relative;
+  border: 1px solid #aaa;
+  padding: 20px;
+  width: 200px;
+  height: 100px;
+  overflow: hidden;
+}
+
+.modal {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  box-shadow: rgba(100, 100, 111, 0.3) 0px 7px 29px 0px;
+  background-color: white;
+  border: 2px solid #000;
+  border-radius: 12px;
+  position: absolute;
+  width: 200px;
+  top: 40%;
+  left: calc(50% - 100px);
+}
+```
+
+App 파일 속에 포탈을 사용하는 컴포넌트와 그렇지 않은 컴포넌트가 있다. 저 컴포넌트 속에는 `<Modal className='modal'></Modal>` 태그를 포탈로 불러오고 있다. css를 확인해보면 Portal을 사용한 컴포넌트는 modal-container의 `position: relative와 overflow의 프로퍼티의 값의` 영향 을 받지 않는다. 하지만 포탈을 사용하지 않는 컴포넌트는 영향을 받는 것을 아래 영상을 보며 확인해보자.
+
+![리액트 포탈 영상](https://velog.velcdn.com/images/jerrychu/post/99178878-e6bc-447f-b5bd-e0c19a8fbaa3/image.gif)
+
+## 🐹 Etc) Dialog 태그
+
+번외로 아는 분을 통해 Dialog 태그에 대한 것을 알게되었다. 찾아보니 2022년부터 사파리와 파이어폭스도 지원하게 되면서 Dialog 태그의 호환성을 신경 쓰지 않고 사용할 수 있게 되었다. 기존에 모달을 개발하면서 overlay 요소를 별도로 만들고 스타일링 하는 과정이 귀찮았는데 이 태그를 통해 간단하게 개발할 수 있다는것이 큰 장점인 것 같다. 기초적인 지식만 있으면 사용하기 어렵지 않으니 한번 사용해보는 것도 좋을 것 같다 👍👍👍
+
+## 🐹 결론
+
+> - 리액트 포탈을 사용하면 독립적인 DOM으로 렌더링 되기 때문에 기존 컴포넌트의 구조에 영향을 주지 않는다.
+
+- 따라서 스타일링 하기 간편하고 독립된 스타일링을 통해 유지보수성이 좋아지고 CSS 충돌이 방지된다.
+- 리액트 포털의 사용은 물리적 배치만 변경되고 자식은 부모 트리가 제공하는 컨텍스트에 접근이 가능하고 이벤트는 React tree에 따라 자식에서 부모로 버블링된다.
+
+## 🐹 참조
+
+- [리액트 포탈 공식문서](https://react.dev/reference/react-dom/createPortal)
+- [reference createPortal](https://react-ko.dev/reference/react-dom/createPortal)
