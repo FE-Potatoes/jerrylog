@@ -19,6 +19,10 @@
     line-height: calc(var(--spacing) * 7);
   }
 
+  button {
+    cursor: pointer;
+  }
+
   @media (min-width: 768px) {
     body {
       max-width: var(--container-contentWidth);
