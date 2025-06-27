@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useRef } from 'react';
 
 import { PostMeta } from '@/types/blogType';
 import { motion, useInView } from 'framer-motion';
@@ -14,7 +14,7 @@ export default function BlogPosts({ sortPosts }: { sortPosts: PostMeta[] }) {
         const ref = useRef(null);
         const isInView = useInView(ref, { amount: 0.3, once: true });
 
-        const { name, title, date, image: imageSrc, category } = item;
+        const { name, title, date, image: imageSrc, category, link } = item;
 
         return (
           <motion.article
@@ -31,6 +31,7 @@ export default function BlogPosts({ sortPosts }: { sortPosts: PostMeta[] }) {
               date={date}
               imageSrc={imageSrc}
               category={category}
+              link={link}
             />
           </motion.article>
         );

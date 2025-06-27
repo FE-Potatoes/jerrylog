@@ -3,7 +3,7 @@
 import { PostMeta } from '@/types/blogType';
 import { motion } from 'framer-motion';
 
-import Post from '../common/PostCard';
+import PostCard from '../common/PostCard';
 
 export default function HomePosts({
   changesImagesPosts,
@@ -42,16 +42,17 @@ export default function HomePosts({
       className="flex flex-col gap-6 md:grid md:grid-cols-3"
     >
       {changesImagesPosts.map((item) => {
-        const { name, title, date, image: imageSrc, category } = item;
+        const { name, title, date, image: imageSrc, category, link } = item;
         return (
           <motion.article key={title} variants={itemVriants}>
-            <Post
+            <PostCard
               key={name}
               name={name}
               title={title}
               date={date}
               imageSrc={imageSrc}
               category={category}
+              link={link}
             />
           </motion.article>
         );

@@ -1,4 +1,5 @@
-import { calGetAllPosts, calGetPosts } from '@/constants/dataset';
+import { calGetAllPosts } from '@/constants/dataset';
+import { calFormatDateToUS } from '@/utils/date';
 
 export default async function Page({
   params,
@@ -19,12 +20,15 @@ export default async function Page({
     category: fileCategory,
   } = metadata;
 
+  const categoryLabel = category === 'dev' ? 'Dev' : 'Life';
+  const transformDate = calFormatDateToUS(date);
+
   return (
     <article className="post-mdx m-auto mt-[1rem] max-w-[768px] md:mt-[2rem]">
       <header className="font-arita mb-[3rem] flex flex-col font-semibold">
         <h1 className="font-arita text-xl">{title}</h1>
         <time className="text-secondary mb-2 text-sm leading-7 font-light">
-          {date}
+          {categoryLabel} ﹒ {transformDate}
         </time>
         <span className="text-secondary text-sm font-light">by {author}</span>
       </header>

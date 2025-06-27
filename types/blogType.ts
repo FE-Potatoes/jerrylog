@@ -3,6 +3,7 @@ export type PostMeta = {
   category: 'dev' | 'life';
   date: string;
   description: string;
+  link?: string;
   icon?: string;
   image: string;
   name: string;
