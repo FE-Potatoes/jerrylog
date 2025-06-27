@@ -14,7 +14,7 @@ export default async function Home() {
   return (
     <div className="flex flex-col">
       <h1 className="mb-4">경훈 ﹒ JerryChu</h1>
-      <div className="font-arita mb-8">
+      <div className="font-arita text-secondary mb-8">
         <p>
           화려하기보다는 직관적인 UI, 복잡하기보다는 이해하기 쉬운 코드를
           지향합니다.
