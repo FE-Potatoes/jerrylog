@@ -1,4 +1,4 @@
-import { PostMeta } from '@/types/blogType';
+import { PostCategory, PostMeta } from '@/types/blogType';
 import { readdir } from 'fs/promises';
 import path from 'path';
 
@@ -12,7 +12,7 @@ export const calSortTimePosts = (posts: PostMeta[]) => {
 };
 
 // 특정 게시판 게시물 받기
-export async function calGetPosts(type: 'dev' | 'life') {
+export async function calGetPosts(type: PostCategory) {
   // 파일 경로 찾기
   const postPath = path.resolve(process.cwd(), 'public', 'blog', `${type}`);
   const fileList = await readdir(postPath, { withFileTypes: true });

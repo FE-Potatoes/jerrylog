@@ -1,6 +1,36 @@
-import { calGetPosts } from '@/constants/dataset';
+import { siteConfig } from '@/constants/config';
+import { PostCategory } from '@/types/blogType';
+import { calGetPosts } from '@/utils/dataset';
+import { Metadata } from 'next';
 
-const calPostsInfo = (category: 'dev' | 'life') => {
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ category: PostCategory }>;
+}): Promise<Metadata> {
+  const { category } = await params;
+  const { title, desc } = calPostsInfo(category);
+  const titleLabel = `JerryChu ${title}`;
+
+  return {
+    title: titleLabel,
+    description: desc,
+    openGraph: {
+      title: titleLabel,
+      url: `${siteConfig.url}/blog/${category}`,
+      description: desc,
+      images: [{ url: siteConfig.author.photo, alt: titleLabel }],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description: desc,
+      images: [{ url: siteConfig.author.photo, alt: titleLabel }],
+    },
+  };
+}
+
+export const calPostsInfo = (category: PostCategory) => {
   if (category === 'dev')
     return {
       title: 'Dev Blog Posts',
@@ -17,7 +47,7 @@ export default async function PostsLayout({
   params,
   children,
 }: {
-  params: Promise<{ category: 'dev' | 'life' }>;
+  params: Promise<{ category: PostCategory }>;
   children: React.ReactNode;
 }) {
   const { category } = await params;

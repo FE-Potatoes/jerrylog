@@ -1,7 +1,7 @@
 import React from 'react';
 
-import { siteConfig } from '@/app/config';
 import ThemeButton from '@/components/common/ThemeButton';
+import { siteConfig } from '@/constants/config';
 import Image, { StaticImageData } from 'next/image';
 import Link from 'next/link';
 

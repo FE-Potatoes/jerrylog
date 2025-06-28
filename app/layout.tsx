@@ -6,12 +6,10 @@ import CoreProvider from '@/providers/CoreProvider';
 import { cn } from '@/utils/cn';
 import type { Metadata } from 'next';
 
+import { seoConfig } from '../constants/config';
 import '../styles/global.css';
 
-export const metadata: Metadata = {
-  title: 'Jerrychu blog',
-  description: 'Jerrychu blog',
-};
+export const metadata: Metadata = seoConfig;
 
 export default function RootLayout({
   children,
