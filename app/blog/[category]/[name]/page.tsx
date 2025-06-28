@@ -2,6 +2,7 @@ import { siteConfig } from '@/constants/config';
 import { PostCategory } from '@/types/blogType';
 import { calGetAllPosts } from '@/utils/dataset';
 import { calFormatDateToUS } from '@/utils/date';
+import { calJsonLd } from '@/utils/jsonLd';
 import { Metadata } from 'next';
 
 export async function generateMetadata({
@@ -41,22 +42,36 @@ export default async function Page({
     `@/public/blog/${category}/${name}.mdx`
   );
 
-  const { title, date, author } = metadata;
+  const { title, date, author, description } = metadata;
 
   const categoryLabel = category === 'dev' ? 'Dev' : 'Life';
   const transformDate = calFormatDateToUS(date);
 
+  const jsonLd = calJsonLd({
+    title,
+    date: new Date(date).toISOString(),
+    summary: description,
+    category,
+    name,
+  });
+
   return (
-    <article className="post-mdx m-auto mt-[1rem] max-w-[768px] md:mt-[2rem]">
-      <header className="font-arita mb-[3rem] flex flex-col font-semibold">
-        <h1 className="font-arita text-xl">{title}</h1>
-        <time className="text-secondary mb-2 text-sm leading-7 font-light">
-          {categoryLabel} ﹒ {transformDate}
-        </time>
-        <span className="text-secondary text-sm font-light">by {author}</span>
-      </header>
-      <Mdx />
-    </article>
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <article className="post-mdx m-auto mt-[1rem] max-w-[768px] md:mt-[2rem]">
+        <header className="font-arita mb-[3rem] flex flex-col font-semibold">
+          <h1 className="font-arita text-xl">{title}</h1>
+          <time className="text-secondary mb-2 text-sm leading-7 font-light">
+            {categoryLabel} ﹒ {transformDate}
+          </time>
+          <span className="text-secondary text-sm font-light">by {author}</span>
+        </header>
+        <Mdx />
+      </article>
+    </>
   );
 }
 
