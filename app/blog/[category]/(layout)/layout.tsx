@@ -3,6 +3,19 @@ import { PostCategory } from '@/types/blogType';
 import { calGetPosts } from '@/utils/dataset';
 import { Metadata } from 'next';
 
+const calPostsInfo = (category: PostCategory) => {
+  if (category === 'dev')
+    return {
+      title: 'Dev Blog Posts',
+      desc: '개발 관련 블로그 포스트 모음입니다. 다양한 기술과 경험을 공유합니다.',
+    };
+
+  return {
+    title: 'Life Blog Posts',
+    desc: '일상 관련 블로그 포스트 모음입니다. 일상의 경험을 공유합니다.',
+  };
+};
+
 export async function generateMetadata({
   params,
 }: {
@@ -29,19 +42,6 @@ export async function generateMetadata({
     },
   };
 }
-
-export const calPostsInfo = (category: PostCategory) => {
-  if (category === 'dev')
-    return {
-      title: 'Dev Blog Posts',
-      desc: '개발 관련 블로그 포스트 모음입니다. 다양한 기술과 경험을 공유합니다.',
-    };
-
-  return {
-    title: 'Life Blog Posts',
-    desc: '일상 관련 블로그 포스트 모음입니다. 일상의 경험을 공유합니다.',
-  };
-};
 
 export default async function PostsLayout({
   params,
