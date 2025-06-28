@@ -9,14 +9,7 @@ import type { Metadata } from 'next';
 import { seoConfig } from '../constants/config';
 import '../styles/global.css';
 
-<<<<<<< HEAD
 export const metadata: Metadata = seoConfig;
-=======
-export const metadata: Metadata = {
-  title: 'Jerrychu blog',
-  description: 'Jerrychu blog',
-};
->>>>>>> a683c9ec23be2e00c7c6adf29a061e52b9acf036
 
 export default function RootLayout({
   children,
