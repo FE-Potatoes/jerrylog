@@ -51,6 +51,9 @@ export const seoConfig: Metadata = {
   title: siteConfig.title,
   description: siteConfig.description,
   keywords: ['jerrychu', '개발 블로그', '일상 블로그', '블로그', 'blog'],
+  verification: {
+    google: 'YV2XiZ4p2B-EZQUYFMOORXahkH7uzy9A6vm6xZPP_t4',
+  },
   openGraph: {
     type: 'website',
     locale: 'ko-KR',
