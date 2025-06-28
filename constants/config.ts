@@ -53,6 +53,9 @@ export const seoConfig: Metadata = {
   keywords: ['jerrychu', '개발 블로그', '일상 블로그', '블로그', 'blog'],
   verification: {
     google: 'YV2XiZ4p2B-EZQUYFMOORXahkH7uzy9A6vm6xZPP_t4',
+    other: {
+      'naver-site-verification': 'cd6fa7075e8d25586ca69d55a9b97c36db3600c6',
+    },
   },
   openGraph: {
     type: 'website',
