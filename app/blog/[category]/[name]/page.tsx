@@ -15,7 +15,7 @@ export async function generateMetadata({
   const { title, description, tags } = metadata;
 
   return {
-    title: title,
+    title,
     description,
     keywords: tags,
     openGraph: {

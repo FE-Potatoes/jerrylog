@@ -3,16 +3,16 @@ import { Metadata } from 'next';
 
 export const siteConfig = {
   url: 'https://www.jerrychu.me',
-  title: 'JerryChu Frontend Engineer',
+  title: 'jerrychu (제리추) 블로그',
   description:
-    'jerrychu.me 프론트엔드 개발자의 블로그, 개발하며 배운 것들을 기록하고, 가끔은 일상의 경험도 함께 기록합니다.',
+    'jerrychu 프론트엔드 개발자의 블로그, 개발하며 배운 것들을 기록하고, 가끔은 일상의 경험도 함께 기록합니다.',
   copyright: 'jerrychu © All rights reserved.',
   since: 2025,
   googleAnalyticsId: '',
   generator: 'Next.js',
-  applicationName: 'JerryChu Frontend blog',
+  applicationName: 'jerrychu (제리추) 블로그',
   author: {
-    name: 'Jerry Chu',
+    name: 'jerrychu',
     photo: 'https://avatars.githubusercontent.com/u/68219145?v=4',
     bio: 'Junior Frontend Engineer',
     contacts: {

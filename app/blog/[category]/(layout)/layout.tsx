@@ -6,13 +6,13 @@ import { Metadata } from 'next';
 const calPostsInfo = (category: PostCategory) => {
   if (category === 'dev')
     return {
-      title: 'Dev Blog Posts',
-      desc: '개발 관련 블로그 포스트 모음입니다. 다양한 기술과 경험을 공유합니다.',
+      title: 'jerrychu (제리추) / 프론트엔드 개발 블로그 작성글',
+      desc: 'jerrychu 개발 관련 블로그 포스트 모음',
     };
 
   return {
-    title: 'Life Blog Posts',
-    desc: '일상 관련 블로그 포스트 모음입니다. 일상의 경험을 공유합니다.',
+    title: 'jerrychu (제리추) / 일상 블로그 작성글',
+    desc: 'jerrychu 일상 관련 블로그 포스트 모음',
   };
 };
 
