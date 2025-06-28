@@ -1,5 +1,5 @@
 import HomePosts from '@/components/home/HomePosts';
-import { calGetAllPosts, calSortTimePosts } from '@/constants/dataset';
+import { calGetAllPosts, calSortTimePosts } from '@/utils/dataset';
 
 export default async function Home() {
   const allPosts = await calGetAllPosts();

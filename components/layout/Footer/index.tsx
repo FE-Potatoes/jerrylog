@@ -1,8 +1,8 @@
 import React from 'react';
 
-import { siteConfig } from '@/app/config';
 import ContactsIcon, { ContactType } from '@/components/common/ContactsIcon';
 import LinkExternal from '@/components/common/LinkExternal';
+import { siteConfig } from '@/constants/config';
 import { cn } from '@/utils/cn';
 import Link from 'next/link';
 

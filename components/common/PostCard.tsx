@@ -1,3 +1,4 @@
+import { PostCategory } from '@/types/blogType';
 import { calFormatDateToDot } from '@/utils/date';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -10,7 +11,7 @@ export interface PostProps {
   title: string;
   date: string;
   imageSrc: string;
-  category: 'dev' | 'life';
+  category: PostCategory;
   link?: string;
 }
 
@@ -35,6 +36,7 @@ export default function PostCard({
           alt={title}
           fill
           priority
+          sizes="(max-width: 768px) 100vw, 50vw"
         />
       </div>
       <div className="bg-thirdary flex-[1] rounded-b-lg px-4 py-2">

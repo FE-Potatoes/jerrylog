@@ -1,10 +1,11 @@
 import BlogPosts from '@/components/blog/BlogPosts';
-import { calGetPosts, calSortTimePosts } from '@/constants/dataset';
+import { PostCategory } from '@/types/blogType';
+import { calGetPosts, calSortTimePosts } from '@/utils/dataset';
 
 export default async function page({
   params,
 }: {
-  params: Promise<{ category: 'dev' | 'life' }>;
+  params: Promise<{ category: PostCategory }>;
 }) {
   const { category } = await params;
   const posts = await calGetPosts(category);

@@ -1,6 +1,7 @@
+export type PostCategory = 'dev' | 'life';
 export type PostMeta = {
   author: string;
-  category: 'dev' | 'life';
+  category: PostCategory;
   date: string;
   description: string;
   link?: string;
