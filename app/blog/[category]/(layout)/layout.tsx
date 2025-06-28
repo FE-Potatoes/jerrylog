@@ -6,13 +6,17 @@ import { Metadata } from 'next';
 const calPostsInfo = (category: PostCategory) => {
   if (category === 'dev')
     return {
-      title: 'jerrychu (제리추) / 프론트엔드 개발 블로그 작성글',
-      desc: 'jerrychu 개발 관련 블로그 포스트 모음',
+      metaTitle: 'jerrychu (제리추) / 프론트엔드 개발 블로그 작성글',
+      metaDesc: 'jerrychu 개발 관련 블로그 포스트 모음',
+      title: 'Dev Blog Posts',
+      desc: '개발 관련 블로그 포스트 모음입니다. 다양한 기술과 경험을 공유합니다.',
     };
 
   return {
-    title: 'jerrychu (제리추) / 일상 블로그 작성글',
-    desc: 'jerrychu 일상 관련 블로그 포스트 모음',
+    metaTitle: 'jerrychu (제리추) / 일상 블로그 작성글',
+    metaDesc: 'jerrychu 일상 관련 블로그 포스트 모음',
+    title: 'Life Blog Posts',
+    desc: '일상 관련 블로그 포스트 모음입니다. 일상의 경험을 공유합니다.',
   };
 };
 
@@ -22,23 +26,22 @@ export async function generateMetadata({
   params: Promise<{ category: PostCategory }>;
 }): Promise<Metadata> {
   const { category } = await params;
-  const { title, desc } = calPostsInfo(category);
-  const titleLabel = `JerryChu ${title}`;
+  const { metaTitle, metaDesc } = calPostsInfo(category);
 
   return {
-    title: titleLabel,
-    description: desc,
+    title: metaTitle,
+    description: metaDesc,
     openGraph: {
-      title: titleLabel,
+      title: metaTitle,
       url: `${siteConfig.url}/blog/${category}`,
-      description: desc,
-      images: [{ url: siteConfig.author.photo, alt: titleLabel }],
+      description: metaDesc,
+      images: [{ url: siteConfig.author.photo, alt: metaTitle }],
     },
     twitter: {
       card: 'summary_large_image',
-      title,
-      description: desc,
-      images: [{ url: siteConfig.author.photo, alt: titleLabel }],
+      title: metaTitle,
+      description: metaDesc,
+      images: [{ url: siteConfig.author.photo, alt: metaTitle }],
     },
   };
 }
