@@ -17,9 +17,9 @@ export async function generateMetadata({
 
   return {
     alternates: {
-      canonical: siteConfig.url,
+      canonical: `${siteConfig.url}/blog/${category}/${name}`,
       languages: {
-        'ko-KR': siteConfig.url,
+        'ko-KR': `${siteConfig.url}/blog/${category}/${name}`,
       },
     },
     title,
