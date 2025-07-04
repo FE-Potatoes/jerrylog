@@ -42,7 +42,6 @@ export default function HomePosts({
       className="flex flex-col gap-6 md:grid md:grid-cols-3"
     >
       {changesImagesPosts.map((item) => {
-        console.log(item);
         const {
           name,
           title,
