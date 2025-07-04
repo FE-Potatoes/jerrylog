@@ -42,7 +42,15 @@ export default function HomePosts({
       className="flex flex-col gap-6 md:grid md:grid-cols-3"
     >
       {changesImagesPosts.map((item) => {
-        const { name, title, date, image: imageSrc, category, link } = item;
+        const {
+          name,
+          title,
+          date,
+          image: imageSrc,
+          category,
+          link,
+          description,
+        } = item;
         return (
           <motion.article key={title} variants={itemVriants}>
             <PostCard
@@ -50,6 +58,7 @@ export default function HomePosts({
               name={name}
               title={title}
               date={date}
+              description={description}
               imageSrc={imageSrc}
               category={category}
               link={link}

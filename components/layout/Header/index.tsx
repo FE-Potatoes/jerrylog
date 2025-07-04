@@ -1,13 +1,16 @@
-import React from 'react';
+'use client';
 
 import ThemeButton from '@/components/common/ThemeButton';
 import { siteConfig } from '@/constants/config';
-import Image, { StaticImageData } from 'next/image';
+import { cn } from '@/utils/cn';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
 const NAV_LINKS = siteConfig.menus;
 
-const Header = React.memo(() => {
+const Header = () => {
+  const pathname = usePathname();
+
   return (
     <header className="flex h-20 w-full items-center justify-between pt-4 pb-8 select-none">
       <nav className="flex gap-4">
@@ -16,7 +19,10 @@ const Header = React.memo(() => {
             <Link
               key={item.label}
               href={item.href}
-              className="font-caveat text-xl"
+              className={cn(
+                'font-caveat text-xl',
+                pathname === item.href && 'font-semibold',
+              )}
             >
               {item.label}
             </Link>
@@ -26,6 +32,6 @@ const Header = React.memo(() => {
       <ThemeButton />
     </header>
   );
-});
+};
 
 export default Header;
