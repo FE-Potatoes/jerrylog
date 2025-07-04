@@ -64,7 +64,7 @@ export default function PostCard({
     return (
       <LinkExternal
         href={link}
-        className="flex h-full cursor-pointer flex-col"
+        className="flex h-full cursor-pointer flex-col rounded-t-lg"
         aria-label={`${title} (새 창으로 열림)`}
       >
         {commonContent}
@@ -76,7 +76,7 @@ export default function PostCard({
   return (
     <Link
       href={`/blog/${category}/${name}`}
-      className="flex h-full cursor-pointer flex-col"
+      className="flex h-full cursor-pointer flex-col rounded-t-lg"
     >
       {commonContent}
     </Link>
