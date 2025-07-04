@@ -13,15 +13,22 @@ export async function generateMetadata({
   const { category, name } = await params;
 
   const { metadata } = await import(`@/public/blog/${category}/${name}.mdx`);
-  const { title, description, tags } = metadata;
+  const { title, description, tags, image } = metadata;
 
   return {
+    alternates: {
+      canonical: siteConfig.url,
+      languages: {
+        'ko-KR': siteConfig.url,
+      },
+    },
     title,
     description,
     keywords: tags,
     openGraph: {
       title,
       url: `${siteConfig.url}/blog/${category}/${name}`,
+      images: [{ url: image, alt: title }],
       description,
     },
     twitter: {

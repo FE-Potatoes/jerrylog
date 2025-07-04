@@ -12,6 +12,12 @@ export async function generateMetadata({
   const { metaTitle, metaDesc } = calPostsInfo(category);
 
   return {
+    alternates: {
+      canonical: siteConfig.url,
+      languages: {
+        'ko-KR': siteConfig.url,
+      },
+    },
     title: metaTitle,
     description: metaDesc,
     openGraph: {
