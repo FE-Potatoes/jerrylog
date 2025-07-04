@@ -13,6 +13,7 @@ export interface PostProps {
   imageSrc: string;
   category: PostCategory;
   link?: string;
+  description: string;
 }
 
 export default function PostCard({
@@ -21,6 +22,7 @@ export default function PostCard({
   date,
   imageSrc,
   category,
+  description,
   link,
 }: PostProps) {
   const categoryLabel = category === 'dev' ? 'Dev' : 'Life';
@@ -39,17 +41,20 @@ export default function PostCard({
           sizes="(max-width: 768px) 100vw, 50vw"
         />
       </div>
-      <div className="bg-thirdary flex-[1] rounded-b-lg px-4 py-2">
-        <div className="font-caveat mb-[0.5rem] flex items-center justify-between text-[0.875rem]">
+      <div className="bg-thirdary relative flex-[1] rounded-b-lg px-4 pt-3 pb-2">
+        <h3 className="font-arita mb-2 line-clamp-2 text-[0.875rem] leading-5 font-semibold">
+          {title}
+        </h3>
+        <p className="font-arita text-secondary mb-[2.4rem] line-clamp-2 min-h-[2rem] overflow-hidden text-xs">
+          {description}
+        </p>
+        <div className="font-caveat absolute inset-x-0 bottom-1 flex w-full items-center justify-between px-4 text-[0.875rem]">
           <div>
             <span>{categoryLabel} ﹒ </span>
             <time className="font-caveat">{transformDate}</time>
           </div>
           {link && <ExternalIcon />}
         </div>
-        <h3 className="font-arita line-clamp-1 text-[0.875rem] font-semibold">
-          {title}
-        </h3>
       </div>
     </>
   );
