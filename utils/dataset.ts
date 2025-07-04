@@ -2,6 +2,32 @@ import { PostCategory, PostMeta } from '@/types/blogType';
 import { readdir } from 'fs/promises';
 import path from 'path';
 
+/**
+ * 게시물 목록을 받아 태그별로 그룹화한 객체를 반환합니다.
+ * - 각 게시물의 상위 2개 태그만 사용합니다.
+ * - 'all' 키에는 전체 게시물을 저장합니다.
+ *
+ * @param sortPosts 정렬된 게시물 배열
+ * @returns 태그별로 분류된 게시물 객체 (예: { react: [...], nextjs: [...], all: [...] })
+ */
+export const calTagPosts = (sortPosts: PostMeta[]) => {
+  const filterPosts = sortPosts.reduce(
+    (acc: { [key: string]: PostMeta[] }, cur) => {
+      const { tags } = cur;
+      const sliceTags = tags.slice(0, 2);
+
+      for (const tag of sliceTags) {
+        if (!acc[tag]) acc[tag] = [];
+        acc[tag].push(cur);
+      }
+
+      return acc;
+    },
+    { all: sortPosts },
+  );
+  return filterPosts;
+};
+
 // 최신 날짜 기준으로 정렬
 export const calSortTimePosts = (posts: PostMeta[]) => {
   const sortTimePost = posts.sort(
@@ -39,3 +65,20 @@ export async function calGetAllPosts() {
   const allPosts = [...devPosts, ...lifePosts];
   return allPosts;
 }
+
+export const calPostsInfo = (category: PostCategory) => {
+  if (category === 'dev')
+    return {
+      metaTitle: 'jerrychu (제리추) / 프론트엔드 개발 블로그 작성글',
+      metaDesc: 'jerrychu 개발 관련 블로그 포스트 모음',
+      title: 'Dev Blog Posts',
+      desc: '개발 관련 블로그 포스트 모음입니다. 다양한 기술과 경험을 공유합니다.',
+    };
+
+  return {
+    metaTitle: 'jerrychu (제리추) / 일상 블로그 작성글',
+    metaDesc: 'jerrychu 일상 관련 블로그 포스트 모음',
+    title: 'Life Blog Posts',
+    desc: '일상 관련 블로그 포스트 모음입니다. 일상의 경험을 공유합니다.',
+  };
+};

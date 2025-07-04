@@ -1,8 +1,7 @@
 import { siteConfig } from '@/constants/config';
 import { PostCategory } from '@/types/blogType';
+import { calPostsInfo } from '@/utils/dataset';
 import { Metadata } from 'next';
-
-import { calPostsInfo } from './page';
 
 export async function generateMetadata({
   params,
