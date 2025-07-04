@@ -42,9 +42,9 @@ export default function PostCard({
         />
       </div>
       <div className="bg-thirdary relative flex-[1] rounded-b-lg px-4 pt-3 pb-2">
-        <h3 className="font-arita mb-2 line-clamp-2 text-[0.875rem] leading-5 font-semibold">
+        <h2 className="font-arita mb-2 line-clamp-2 text-[0.875rem] leading-5 font-semibold">
           {title}
-        </h3>
+        </h2>
         <p className="font-arita text-secondary mb-[2.4rem] line-clamp-2 min-h-[2rem] overflow-hidden text-xs">
           {description}
         </p>
