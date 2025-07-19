@@ -1,7 +1,7 @@
 import BlogIntroduce from '@/components/blog/BlogIntroduce';
 import BlogPosts from '@/components/blog/BlogPosts';
 import BlogTags from '@/components/blog/BlogTags';
-import { PostCategory, PostMeta } from '@/types/blogType';
+import { PostCategory } from '@/types/blogType';
 import {
   calGetPosts,
   calPostsInfo,

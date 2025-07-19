@@ -1,5 +1,5 @@
 .post-mdx {
-  font-family: var(--font-pretandard);
+  font-family: var(--font-notosans);
 
   body {
     margin: 0 auto;
@@ -109,7 +109,7 @@
 
   p code {
     background-color: var(--color-thirdary);
-    font-family: var(--font-pretandard);
+    font-family: var(--font-notosans);
     padding: 0.2rem 0.4rem;
     font-size: 85%;
     border-radius: 3px;

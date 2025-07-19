@@ -1,7 +1,7 @@
 import FloatingHeader from '@/components/common/FloatingHeader';
 import Footer from '@/components/layout/Footer';
 import Header from '@/components/layout/Header';
-import { aritaFont, caveatFont, pretendardFont } from '@/constants/font';
+import { aritaFont, caveatFont, notoSansFont } from '@/constants/font';
 import CoreProvider from '@/providers/CoreProvider';
 import { cn } from '@/utils/cn';
 import type { Metadata } from 'next';
@@ -22,7 +22,7 @@ export default function RootLayout({
         className={cn(
           caveatFont.variable,
           aritaFont.variable,
-          pretendardFont.variable,
+          notoSansFont.variable,
         )}
       >
         <CoreProvider>
