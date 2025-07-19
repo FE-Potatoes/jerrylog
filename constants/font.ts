@@ -1,4 +1,4 @@
-import { Caveat } from 'next/font/google';
+import { Caveat, Noto_Sans_KR } from 'next/font/google';
 import localFont from 'next/font/local';
 
 export const caveatFont = Caveat({
@@ -6,7 +6,13 @@ export const caveatFont = Caveat({
   weight: ['400', '500', '600', '700'],
   subsets: ['latin'],
   display: 'swap',
-  preload: true,
+});
+
+export const notoSansFont = Noto_Sans_KR({
+  variable: '--font-notosans',
+  weight: ['300', '400', '500', '600', '700'],
+  subsets: ['latin'],
+  display: 'swap',
 });
 
 export const aritaFont = localFont({
@@ -30,33 +36,4 @@ export const aritaFont = localFont({
   ],
   variable: '--font-arita',
   display: 'swap',
-  preload: true,
-});
-
-export const pretendardFont = localFont({
-  src: [
-    {
-      path: '../assets/fonts/PretendardGOV-Bold.woff2',
-      weight: '700',
-    },
-    {
-      path: '../assets/fonts/PretendardGOV-SemiBold.woff2',
-      weight: '600',
-    },
-    {
-      path: '../assets/fonts/PretendardGOV-Medium.woff2',
-      weight: '500',
-    },
-    {
-      path: '../assets/fonts/PretendardGOV-Regular.woff2',
-      weight: '400',
-    },
-    {
-      path: '../assets/fonts/PretendardGOV-Light.woff2',
-      weight: '300',
-    },
-  ],
-  variable: '--font-pretandard',
-  display: 'swap',
-  preload: true,
 });
