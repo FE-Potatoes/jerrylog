@@ -55,11 +55,11 @@
   }
 
   strong {
-    font-weight: 600;
+    font-weight: 500;
   }
 
   a:visited {
-    color: #466b6c;
+    color: #800080;
   }
 
   ul,
