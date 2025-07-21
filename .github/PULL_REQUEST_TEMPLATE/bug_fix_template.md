@@ -1,8 +1,8 @@
 ---
-name: 'feature_pr'
-about: '새로운 기능 추가 또는 기존 기능 개선에 대한 PR입니다.'
-title: '[기능] <간결한 기능 요약>'
-labels: ['type: feature',]
+name: '🐛 버그 수정'
+about: '보고된 버그를 수정하기 위한 PR입니다.'
+title: '[FIX] <수정된 버그 간결하게 요약>'
+labels: ['type: bug']
 assignees: ['chuhoon']
 ---
 
@@ -14,7 +14,7 @@ assignees: ['chuhoon']
 
 - [ ] 작업 항목 작성
 
-## 💡 변경 사항 상세
+## 🐛 버그 수정 사항 상세
 
 - 어떤 것이 개발되고 변경되었는지 상세하게 작성해주세요
 
