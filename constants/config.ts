@@ -55,6 +55,7 @@ export const seoConfig: Metadata = {
     google: 'YV2XiZ4p2B-EZQUYFMOORXahkH7uzy9A6vm6xZPP_t4',
     other: {
       'naver-site-verification': 'cd6fa7075e8d25586ca69d55a9b97c36db3600c6',
+      'google-adsense-account': 'ca-pub-4761019594552611',
     },
   },
   openGraph: {
