@@ -1,7 +1,7 @@
 ---
 name: bug_report
 about: 버그를 보고합니다.
-title: ''
+title: "[버그] <간결한 버그 요약>"
 labels: 'tpye: bug'
 assignees: chuhoon
 
