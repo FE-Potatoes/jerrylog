@@ -1,11 +1,3 @@
----
-name: '🐛 버그 수정'
-about: '보고된 버그를 수정하기 위한 PR입니다.'
-title: '[FIX] <수정된 버그 간결하게 요약>'
-labels: ['type: bug']
-assignees: ['chuhoon']
----
-
 ## 🔧 작업 개요
 
 작업 개요를 작성해주세요

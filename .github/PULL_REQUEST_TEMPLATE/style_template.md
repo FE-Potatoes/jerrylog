@@ -1,11 +1,3 @@
----
-name: '💄 스타일 추가 및 개선'
-about: '스타일 추가 및 개선을 위한 PR입니다.'
-title: '[STYLE] <추가된 기능 간결하게 요약>'
-labels: ['type: style']
-assignees: ['chuhoon']
----
-
 ## 🔧 작업 개요
 
 작업 개요를 작성해주세요
