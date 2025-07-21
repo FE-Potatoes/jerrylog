@@ -1,0 +1,85 @@
+export const metadata = {
+  title: 'Next seo, 메타태그 설정하기',
+  description: 'Next seo 점수를 높히고 메타태그를 설정하며 글을 작성합니다.',
+  icon: '',
+  image: '/images/blog/dev/cra-to-vite.png',
+  link: '',
+  tags: ['seo'],
+  category: 'dev',
+  date: '2025-07-08 11:13:00',
+  author: 'JerryChu',
+};
+
+## Next 메타 태그 설정 방법
+
+Next에서 메타 태그를 설정하는 방법은 크게 3가지 방법이 있습니다.
+
+1. 정적 metadata 객체
+2. 동적 Generated metadata 함수
+3. 정적 또는 동적으로 생성된 파비콘과 OG 이미지를 추가하는 것에 사용할 수 있는 특수 파일 규칙
+
+위의 규칙을 사용하면 Next.js가 페이지와 관련된 head 태그를 자동으로 생성하며, 브라우저의 개발자 도구에서 확인할 수 있습니다.
+
+## 기본 필드
+
+경로가 메타데이터를 정의하지 않더라도 항상 추가되는 두 가지 기본 메타 태그가 있습니다.
+
+- 메타 문자셋 태그는 웹사이트의 문자 인코딩을 설정합니다.
+- 메타 뷰포트 태그는 웹사이트의 뷰포트 너비와 배율을 설정하여 다양한 디바이스에 맞게 조정합니다.
+- 다른 메타데이터 필드는 메타데이터 객체(정적 메타데이터의 경우) 또는 생성 메타데이터 함수(생성된 메타데이터의 경우)를 사용하여 정의할 수 있습니다.
+
+## 정적 metadata
+
+정적 메타데이터를 정의하려면 정적 layout.js 또는 page.js 파일에서 메타데이터 개체를 내보내세요.
+예를 들어 블로그 경로에 제목과 설명을 추가하려면 다음과 같이 하세요.
+
+```tsx
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'My Blog',
+  description: '...',
+};
+
+export default function Page() {}
+```
+
+저는 정적 metadata는 about 페이지에 적용했습니다.
+Next에 metadata 타입은 (해당 링크)[https://nextjs.org/docs/app/api-reference/functions/generate-metadata#types]에서 확인하시면 됩니다.
+
+## 적용 metadata
+
+```tsx
+export const seoConfig: Metadata = {
+  alternates: {
+    canonical: siteConfig.url,
+    languages: {
+      'ko-KR': siteConfig.url,
+    },
+  },
+  title: siteConfig.title,
+  description: siteConfig.description,
+  keywords: ['jerrychu', '개발 블로그', '일상 블로그', '블로그', 'blog'],
+  verification: {
+    google: 'YV2XiZ4p2B-EZQUYFMOORXahkH7uzy9A6vm6xZPP_t4',
+    other: {
+      'naver-site-verification': 'cd6fa7075e8d25586ca69d55a9b97c36db3600c6',
+    },
+  },
+  openGraph: {
+    type: 'website',
+    locale: 'ko-KR',
+    url: siteConfig.url,
+    title: siteConfig.title,
+    description: siteConfig.description,
+    siteName: siteConfig.title,
+    images: [{ url: siteConfig.author.photo, alt: siteConfig.title }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: siteConfig.title,
+    description: siteConfig.description,
+    images: [{ url: siteConfig.author.photo, alt: siteConfig.title }],
+  },
+};
+```
