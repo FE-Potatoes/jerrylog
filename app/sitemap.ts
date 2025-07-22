@@ -1,8 +1,7 @@
+import { siteConfig } from '@/constants/config';
 import { PostMeta } from '@/types/blogType';
 import { calGetAllPosts } from '@/utils/dataset';
 import { MetadataRoute } from 'next';
-
-import { siteConfig } from '../constants/config';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const allPosts = await calGetAllPosts();
