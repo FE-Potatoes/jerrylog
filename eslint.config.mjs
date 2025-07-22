@@ -12,7 +12,9 @@ const compat = new FlatCompat({
   baseDirectory: __dirname,
 });
 
-// https://techblog.woowahan.com/15903/
+/**
+ * @type {import('eslint').Linter.FlatConfig[]}
+ */
 const config = [
   // Next 설정
   ...compat.extends('next/core-web-vitals', 'next/typescript'),
