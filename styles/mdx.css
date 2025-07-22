@@ -21,7 +21,6 @@
   h2 {
     font-size: 1.5rem;
     font-weight: 600;
-
     margin-top: 2rem;
     margin-bottom: 1rem;
   }
@@ -29,7 +28,7 @@
   h3 {
     font-size: 1.25rem;
     font-weight: 500;
-    margin-top: 1.5rem;
+    margin-top: 2rem;
     margin-bottom: 0.5rem;
   }
 
@@ -39,7 +38,11 @@
 
   p {
     font-weight: 300;
-    margin-bottom: 1rem;
+    margin-bottom: 0.5rem;
+  }
+
+  img {
+    margin: 1rem 0;
   }
 
   a {
@@ -65,6 +68,7 @@
   ul,
   ol {
     padding-left: 1rem;
+    margin-bottom: 1rem;
   }
 
   li ul,
@@ -81,12 +85,14 @@
 
   ol {
     list-style-position: outside;
-    list-style-type: none;
+  }
+
+  ol li {
+    list-style-type: decimal;
   }
 
   li {
-    margin-bottom: 0.5rem;
-    line-height: 1.6;
+    font-weight: 300;
   }
 
   aside {
@@ -107,7 +113,23 @@
     margin-bottom: initial;
   }
 
-  p code {
+  .rehype-code-title {
+    padding: 0.25rem 1rem;
+    margin-top: 1rem;
+    border-radius: 0.5rem 0.5rem 0 0;
+    background-color: var(--color-thirdary);
+    color: var(--color-secondary);
+    font-size: 0.8rem;
+  }
+
+  pre {
+    margin: 0 0 1rem 0;
+    border-radius: 0 0 0.5rem 0.5rem;
+    font-size: 0.8rem;
+  }
+
+  p code,
+  li code {
     background-color: var(--color-thirdary);
     font-family: var(--font-notosans);
     padding: 0.2rem 0.4rem;
