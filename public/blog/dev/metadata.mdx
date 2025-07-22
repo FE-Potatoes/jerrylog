@@ -1,0 +1,388 @@
+export const metadata = {
+  title: 'Next.js SEO의 핵심, 메타데이터 어떻게 작성하고 적용될까?',
+  description:
+    'Next SEO 최적화를 위한 Next.js 메타데이터 작성법과 메타데이터가 적용 방식을 공부한 것을 공유합니다.',
+  icon: '',
+  image: '/images/blog/dev/metadata.png',
+  link: '',
+  tags: [
+    '블로그 SEO 설정',
+    'seo 점수 개선',
+    'next.js 15 메타태그',
+    'next.js 메타데이터 적용 맟 최적화',
+    'metaData 설정하기',
+    'Streaming metadata',
+  ],
+  category: 'dev',
+  date: '2025-07-23 04:45:11',
+  author: 'JerryChu',
+};
+
+## 메타데이터는 무엇일까?
+
+메타데이터는 브라우저의 검색엔진이 페이지를 더 잘 이해하고 처리하기 위해 제공하는 HTML `<Head>` 태그 내부의 데이터를 의미합니다.
+
+## Next 메타 태그 설정 방법
+
+Next에서 메타 태그를 설정하는 방법은 크게 `3가지 방법이` 있습니다.
+
+1. 정적 metadata 객체
+2. 동적 Generated metadata 함수
+3. 정적 또는 동적으로 생성된 파비콘과 OG 이미지를 추가하는 것에 사용할 수 있는 특수 파일 규칙
+
+위의 규칙을 사용하면 Next.js가 페이지와 관련된 head 태그를 자동으로 생성하며,
+브라우저의 개발자 도구에서 확인할 수 있습니다.
+
+## 기본 필드
+
+경로가 메타데이터를 정의하지 않더라도 항상 추가되는 두 가지 기본 메타 태그가 있습니다.
+
+- 메타 문자셋 태그는 웹사이트의 문자 인코딩을 설정합니다.
+  - `<meta charset="utf-8" />`
+  - 웹 페이지에서 한글이나 이모지 같은 문자가 깨지지 않도록 보장합니다.
+- 메타 뷰포트 태그는 웹사이트의 뷰포트 너비와 배율을 설정하여 다양한 디바이스에 맞게 조정합니다.
+  - `<meta name="viewport" content="width=device-width, initial-scale=1" />`
+  - 모바일 반응형 웹을 위한 필수적인 태그입니다.
+  - 화면 너비를 디바이스에 맞추고 기본 배율을 1로 설정합니다.
+- 다른 메타데이터 필드는 메타데이터 객체(정적 메타데이터의 경우) 또는 생성 메타데이터 함수(생성된 메타데이터의 경우)를 사용하여 정의할 수 있습니다.
+
+## 정적 metadata
+
+정적 메타데이터를 정의하려면 정적 layout.js 또는 page.js 파일에서 메타데이터 객체를 export합니다.
+예를 들어 블로그 경로에 제목과 설명을 추가하려면 아래와 같이 작성합니다.
+
+```tsx:example.tsx
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'My Blog',
+  description: '...',
+};
+
+export default function Page() {}
+```
+
+저는 정적 metadata를 RootLayout 페이지에 작성했습니다.
+Next에 metadata 타입은 [링크](https://nextjs.org/docs/app/api-reference/functions/generate-metadata#types)에서 확인하시면 됩니다.
+들어가서 보시면 다양한 타입들이 많습니다 🙂
+
+## 정적 metadata 사용하기 (metadata)
+
+아래 코드와 같이 config.ts 파일에 SEO 관련 정보를(title, description 등) 별도로 정의했고,
+RootLayout에 config.ts에 있는 seoConfig 변수를 import해서 정적 metadata를 적용해줬습니다.
+config.ts 파일을 따로 작성한다면 다른 페이지에서 사용되는 공통된 SEO 데이터들을 재사용 가능함으로써 유지보수성과 일관성을 높일 수 있습니다.
+
+```tsx:app/layout.tsx
+// eslint-disable-next-line react-refresh/only-export-components
+export const metadata: Metadata = seoConfig;
+
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
+  return (
+    <html lang="en" suppressHydrationWarning>
+      <body
+        className={cn(
+          caveatFont.variable,
+          aritaFont.variable,
+          notoSansFont.variable,
+        )}
+      >
+        <CoreProvider>
+          <Header />
+          <main className="relative pb-16">
+            <FloatingHeader />
+            {children}
+          </main>
+          <Footer />
+        </CoreProvider>
+      </body>
+    </html>
+  );
+}
+```
+
+```tsx:constants/config.ts
+// https://nextjs.org/docs/app/api-reference/functions/generate-metadata#metadata-fields
+import { Metadata } from 'next';
+
+export const siteConfig = {
+  url: 'https://www.jerrychu.me',
+  title: 'jerrychu (제리추) 블로그',
+  description:
+    'jerrychu 프론트엔드 개발자의 블로그, 개발하며 배운 것들을 기록하고, 가끔은 일상의 경험도 함께 기록합니다.',
+  copyright: 'jerrychu © All rights reserved.',
+  since: 2025,
+  googleAnalyticsId: '',
+  generator: 'Next.js',
+  applicationName: 'jerrychu (제리추) 블로그',
+  author: {
+    name: 'jerrychu',
+    photo: 'https://avatars.githubusercontent.com/u/68219145?v=4',
+    bio: 'Junior Frontend Engineer',
+    contacts: {
+      email: 'mailto:jerrychu1220@gmail.com',
+      github: 'https://github.com/chuhoon',
+      velog: 'https://velog.io/@jerrychu',
+    },
+  },
+  menus: [
+    {
+      href: '/',
+      label: '🏖️',
+    },
+    {
+      href: '/',
+      label: 'About',
+    },
+    {
+      href: '/blog/dev',
+      label: 'Dev',
+    },
+    {
+      href: '/blog/life',
+      label: 'Life',
+    },
+  ],
+};
+
+export const seoConfig: Metadata = {
+  alternates: {
+    // 페이지의 표준(canonical) URL을 지정하여, 여러 URL로 접근 가능한 경우에도
+    // 검색 엔진이 이 URL을 원본으로 인식하게 합니다.
+    canonical: siteConfig.url,
+    // 특정 언어 버전에 대한 URL을 지정합니다.
+    // 여기서는 한국어 버전에 대한 표준 URL을 설정합니다.
+    languages: {
+      'ko-KR': siteConfig.url,
+    },
+  },
+  // 브라우저 탭이나 검색 결과에 표시될 페이지의 제목입니다.
+  title: siteConfig.title,
+  // 검색 결과에 표시될 페이지의 간략한 설명입니다.
+  description: siteConfig.description,
+  // 검색 엔진이 페이지의 주제를 파악하는 데 사용되는 핵심 키워드 목록입니다.
+  keywords: ['jerrychu', '개발 블로그', '일상 블로그', '블로그', 'blog'],
+  // 사이트 소유권을 확인하기 위한 다양한 검색 엔진 도구의 메타 태그를 설정합니다.
+  verification: {
+    // Google Search Console을 통한 소유권 확인 코드입니다.
+    google: 'YV2XiZ4p2B-EZQUYFMOORXahkH7uzy9A6vm6xZPP_t4',
+    other: {
+      // Naver Search Advisor 소유권 확인 코드입니다.
+      'naver-site-verification': 'cd6fa7075e8d25586ca69d55a9b97c36db3600c6',
+      // Google Adsense 소유권 확인 코드입니다.
+      'google-adsense-account': 'ca-pub-4761019594552611',
+    },
+  },
+  // 링크 공유 시 미리보기(썸네일) 정보를 제어합니다.
+  openGraph: {
+    // 콘텐츠 유형을 웹사이트로 지정합니다. (예: 'article', 'book')
+    type: 'website',
+    // 콘텐츠의 언어 및 지역 설정을 지정합니다.
+    locale: 'ko-KR',
+    // 콘텐츠의 표준 URL입니다.
+    url: siteConfig.url,
+    // 소셜 미디어 공유 시 표시될 제목입니다.
+    title: siteConfig.title,
+    // 소셜 미디어 공유 시 표시될 설명입니다.
+    description: siteConfig.description,
+    // 웹사이트의 이름을 지정합니다.
+    siteName: siteConfig.title,
+    // 소셜 미디어 공유 시 표시될 이미지 목록입니다.
+    images: [{ url: siteConfig.author.photo, alt: siteConfig.title }],
+  },
+  // Twitter 카드 설정을 통해 트위터에서 링크 공유 시 미리보기 정보를 제어합니다.
+  twitter: {
+    // 트위터 카드의 유형을 'summary_large_image'로 지정합니다.
+    // (제목, 설명, 큰 이미지 포함)
+    card: 'summary_large_image',
+    // 트위터 카드에 표시될 제목입니다.
+    title: siteConfig.title,
+    // 트위터 카드에 표시될 설명입니다.
+    description: siteConfig.description,
+    // 트위터 카드에 표시될 이미지 목록입니다.
+    images: [{ url: siteConfig.author.photo, alt: siteConfig.title }],
+  },
+};
+```
+
+## 동적 메타데이터 사용하기 (generateMetadata 함수 사용)
+
+블로그 Post들의 metaData를 설정해야하는데 각각의 Post 별로 제목, 설명, 키워드, 보여지는 이미지들이 다르기 때문에 동적 메타데이터를 사용해야합니다.
+따라서 mdx 파일을 import 하고 mdx 파일 속에 만들어둔 metadata 변수를 가져와 generateMetadata 함수를 통해 동적 메타데이터를 설정했습니다.
+
+```tsx:app/blog/[name]/page.tsx
+// eslint-disable-next-line react-refresh/only-export-components
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ category: PostCategory; name: string }>;
+}): Promise<Metadata> {
+  const { category, name } = await params;
+
+  const { metadata } = await import(`@/public/blog/${category}/${name}.mdx`);
+  const { title, description, tags, image } = metadata;
+
+  return {
+    alternates: {
+      canonical: `${siteConfig.url}/blog/${category}/${name}`,
+      languages: {
+        'ko-KR': `${siteConfig.url}/blog/${category}/${name}`,
+      },
+    },
+    title,
+    description,
+    keywords: tags,
+    openGraph: {
+      title,
+      url: `${siteConfig.url}/blog/${category}/${name}`,
+      images: [{ url: image, alt: title }],
+      description,
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
+    },
+  };
+}
+```
+
+## Next.js 메타데이터 장점
+
+- Next.js app router는 각 페이지 별로 메타태그 편리하게 설정할 수 있어 SEO 최적화에 좋습니다.
+- 별도로 `<head>`에 메타 태그를 직접 작성을 하지 않아도 됩니다.
+- 메타데이터가 페이지 파일과 함께 작성되니 유지보수가 쉽습니다.
+
+## 각각의 페이지에 메타데이터를 정의해주자
+
+Next.js에서 상위 Layout에 공통으로 설정한 메타데이터가 있고, 다른 페이지에서 따로 metadata를 정의하면, 해당 페이지의 metadata가 우선 적용됩니다.
+
+😮 읭? 이게 무슨 말이냐고요? 아래에 추가적으로 설명 작성했습니다.
+
+예시로 app/layout.tsx에서 메타데이터를 설정하고 app/about/page.tsx에서 따로 또 설정했다면 app/about/page.tsx의 메타데이터가 우선적으로 적용됩니다.
+
+## Next.js 15에서의 메타데이터가 읽히는 순서
+
+[Next ordering 공식문서 링크](https://nextjs.org/docs/app/api-reference/functions/generate-metadata#ordering)
+
+Next.js 메타데이터는 root부터 시작해 자식으로 내려가며 차례대로 평가됩니다.
+구조를 보며 예를 들어봅시다.
+
+```ts:order.ts
+app/layout.tsx           (루트 레이아웃)
+app/blog/layout.tsx      (블로그 레이아웃)
+app/blog/[name]/page.tsx (블로그 포스트 페이지)
+```
+
+1. app/layout.tsx의 메타데이터를 읽고
+2. app/blog/layout.tsx 메타데이터를 읽고
+3. app/blog/[name]/page.tsx 메타데이터를 읽습니다.
+
+## Next.js 15에서의 메터데이터 Merge 방식
+
+[Next merge 공식문서 링크](https://nextjs.org/docs/app/api-reference/functions/generate-metadata#merging)
+
+- 위 순서대로 메타데이터 객체들은 shallow merge를 합니다.
+- 중복된 키는 후 순위에 있는 메타데이터 데이터 키와 값으로 교체합니다.
+
+아래 코드를 보며 예를 들겠습니다.
+RootLayout에서는 title이 Jerrlog를 blog layout에서는 openGraph 정보를
+그리고 블로그 포스트 Page에서는 title과 description를 정의했습니다.
+과연 app/blog/[name].page.tsx의 메타데이터는 어떻게 보일까요?
+
+```tsx:app/layout.tsx
+export const metadata = {
+  title: 'Jerrylog',
+}
+```
+
+```tsx:app/blog/laout.tsx
+export const metadata = {
+  openGraph: {
+    images: [{ url: './profile.png', alt: '프로필 이미지' }],
+  }
+}
+```
+
+```tsx:app/blog/[name]/page.tsx
+export const metadata = {
+  title: 'Next.js 15에서 metadata 설정하기',
+  description: 'Next.js 15에서 메타데이터 설정 방법을 소개합니다.'
+}
+```
+
+### blog/[name]/page.tsx에서의 MetaData Merge 결과는?
+
+openGraph, description이 추가되고 title은 중복되지만 후순위에 있는 title로 교체되었습니다.
+
+```tsx:example.tsx
+export const metadata = {
+  title: 'Next.js 15에서 metadata 설정하기',
+  description: 'Next.js 15에서 메타데이터 설정 방법을 소개합니다.'
+  openGraph: {
+    images: [{ url: './profile.png', alt: '프로필 이미지' }],
+  }
+}
+```
+
+루트 레이아웃은 공통 metaData를 제공하고,
+하위 페이지들에게 **필요한 부분만 교체해 중복을 줄이고, 유지보수가 보다 더 간편해집니다.**
+
+## Next.js의 Streaming metadata
+
+[Next Streaming metadata 공식문서 링크](https://nextjs.org/docs/app/api-reference/functions/generate-metadata#streaming-metadata)
+
+generateMetadata() 함수를 통해 반환하는 메타데이터는 스트리밍 형식으로 전송됩니다.
+이게 무슨 말이냐....🥸 **generateMetadata() 함수는 비동기 함수입니다. 즉 데이터를 fetch 오는 과정에서 메타데이터가 늦게 전송될 수 있기 때문에, Next.js는 HTML을 먼저 렌더링하고,
+메타데이터가 준비되면 해당 메타데이터를 삽입합니다.**
+
+그런데 여기서 스트리밍 된 메타데이터는 **`<head>`에 넣어지는 것이 아닌 `<body>`에 메타데이터를 넣습니다.**
+그렇다면 이런 경우 문제가 없을까요..? 메타데이터는 봇과 크롤러를 타겟으로 작동하는데 Googlebot은 자바스크립트를 사용해서 페이지를 렌더링 하기 때문에
+`<body>` 안에 메타데이터는 문제가 없이 잘 인식합니다.
+
+그렇다면 **JavaScript를 실행하지 못하는 봇(HTML만 읽는 봇은)은** 어떻게 할까요?
+이런 경우 **블로킹 방식을 사용해서 문제가 없습니다.** 블로킹 방식은 스트리밍 방식이 아닌 메타데이터를 가져올 때까지 기다리는 것입니다.
+
+## Streaming metadata를 커스텀하고 싶다면?
+
+기본적으로 Next.js가 blocking 해주는 봇 외에 다른 비표준 봇을 커스텀하고 싶다면 next.config.ts에서 htmlLimitedBots를 통해 수정하면 됩니다.
+
+```ts:next.config.ts
+import type { NextConfig } from 'next'
+
+const config: NextConfig = {
+  htmlLimitedBots: /MySpecialBot|MyAnotherSpecialBot|SimpleCrawler/,
+}
+
+export default config
+```
+
+이렇게 설정된 htmlLimitedBots는 아래 코드를 통해 true/false를 반환해서 streaming metadata를 반환할지를 결정하게 됩니다.
+
+[Next streaming-metadata.ts 링크](https://github.com/vercel/next.js/blob/64702a9e422d42034a714ae40a8514d7911d0150/packages/next/src/server/lib/streaming-metadata.ts)
+
+```ts:html-bots.ts
+export const HTML_LIMITED_BOT_UA_RE =
+  /Mediapartners-Google|Slurp|DuckDuckBot|baiduspider|yandex|sogou|bitlybot|tumblr|vkShare|quora link preview|redditbot|ia_archiver|Bingbot|BingPreview|applebot|facebookexternalhit|facebookcatalog|Twitterbot|LinkedInBot|Slackbot|Discordbot|WhatsApp|SkypeUriPreview|Yeti/;
+```
+
+하지만 위와 같이 Streaming metadata를 하지 못하는 사이트가 기본 값이 잘 정의되어 있기 때문에 변경할 필요는 없습니다.
+
+추가적으로 우리나라 대표 검색 플랫폼의 네이버 서치 엔진은 어떤 방식인지 찾아봤습니다.
+
+네이버 서치 어드바이저의 자바스크립트 검색 최적화 가이드에 의하면, 네이버 검색로봇은 페이지를 수집할 때 자바스크립트를 포함해 HTML을 렌더링하고,
+이를 통해 보다 정확하게 페이지 내용을 분석하려고 시도한다고 합니다 👍
+
+자세한 [렌더링 방식은 링크를 통해 확인하시면 됩니다~!](https://searchadvisor.naver.com/guide/seo-advanced-javascript)
+
+## 마무리
+
+Next.js를 사용한 SEO 최적화를 위해 메타데이터 설정 및 공부를 하며 다양한 방면으로 생각하게 되었습니다.
+
+최근 긱뉴스를 통해 Next.js 여러 문제점을 봤고, 실제 면접에서도 Next.js를 선호하지 않는 선배 개발자 분들을 만나 뵙기도 했습니다.
+
+아직 Next.js를 깊이 있게 사용해본 경험은 부족하지만, 이런 비판적인 시각을 통해서 기술을 균등하게 바라보는 시야가 필요하다는 것을 느꼈습니다.
+앞으로는 장점뿐 아니라 단점도 이해하며 기술을 선택하는 개발자가 되고 싶습니다 🙂
