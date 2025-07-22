@@ -2,10 +2,9 @@
 
 import React from 'react';
 
+import Tag from '@/components/common/Tag';
 import { PostCategory, PostMeta } from '@/types/blogType';
 import { useRouter } from 'next/navigation';
-
-import Tag from '../common/Tag';
 
 interface BlogTagsProps {
   category: PostCategory;

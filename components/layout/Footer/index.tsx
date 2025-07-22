@@ -1,5 +1,3 @@
-import React from 'react';
-
 import ContactsIcon, { ContactType } from '@/components/common/ContactsIcon';
 import LinkExternal from '@/components/common/LinkExternal';
 import { siteConfig } from '@/constants/config';

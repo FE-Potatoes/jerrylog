@@ -1,9 +1,8 @@
 'use client';
 
+import PostCard from '@/components/common/PostCard';
 import { PostMeta } from '@/types/blogType';
 import { motion } from 'framer-motion';
-
-import PostCard from '../common/PostCard';
 
 export default function HomePosts({
   changesImagesPosts,

@@ -3,6 +3,7 @@ import { PostCategory } from '@/types/blogType';
 import { calPostsInfo } from '@/utils/dataset';
 import { Metadata } from 'next';
 
+// eslint-disable-next-line react-refresh/only-export-components
 export async function generateMetadata({
   params,
 }: {
