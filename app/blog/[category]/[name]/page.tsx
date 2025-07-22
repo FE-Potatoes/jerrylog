@@ -5,6 +5,7 @@ import { calFormatDateToUS } from '@/utils/date';
 import { calJsonLd } from '@/utils/jsonLd';
 import { Metadata } from 'next';
 
+// eslint-disable-next-line react-refresh/only-export-components
 export async function generateMetadata({
   params,
 }: {

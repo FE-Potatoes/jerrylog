@@ -2,9 +2,8 @@
 
 import { useEffect, useState } from 'react';
 
+import Header from '@/components/layout/Header';
 import { cn } from '@/utils/cn';
-
-import Header from '../layout/Header';
 
 export default function FloatingHeader() {
   const [isShowHeader, setIsShowHeader] = useState(false);

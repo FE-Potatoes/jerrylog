@@ -1,6 +1,6 @@
-import GithubIcon from '../icons/GithubIcon';
-import MailIcon from '../icons/MailIcon';
-import VelogIcon from '../icons/VelogIcon';
+import GithubIcon from '@/components/icons/GithubIcon';
+import MailIcon from '@/components/icons/MailIcon';
+import VelogIcon from '@/components/icons/VelogIcon';
 
 export type ContactType = 'email' | 'github' | 'velog';
 

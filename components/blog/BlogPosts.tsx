@@ -2,10 +2,9 @@
 
 import { useRef } from 'react';
 
+import Post from '@/components/common/PostCard';
 import { PostMeta } from '@/types/blogType';
 import { motion, useInView } from 'framer-motion';
-
-import Post from '../common/PostCard';
 
 const BlogPosts = ({ posts }: { posts: PostMeta[] }) => {
   return (

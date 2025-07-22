@@ -1,3 +1,4 @@
+import GoogleAdsense from '@/components/common/GoogleAdsense';
 import HomePosts from '@/components/home/HomePosts';
 import { calGetAllPosts, calSortTimePosts } from '@/utils/dataset';
 
@@ -28,6 +29,7 @@ export default async function Home() {
       </div>
       <h2 className="font-caveat mb-4 text-3xl">Recent Post</h2>
       <HomePosts changesImagesPosts={changesImagesPosts} />
+      <GoogleAdsense />
     </div>
   );
 }

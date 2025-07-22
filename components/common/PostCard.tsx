@@ -1,9 +1,9 @@
+import ExternalIcon from '@/components/icons/ExternalIcon';
 import { PostCategory } from '@/types/blogType';
 import { calFormatDateToDot } from '@/utils/date';
 import Image from 'next/image';
 import Link from 'next/link';
 
-import ExternalIcon from '../icons/ExternalIcon';
 import LinkExternal from './LinkExternal';
 
 export interface PostProps {
