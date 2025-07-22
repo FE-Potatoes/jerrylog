@@ -1,0 +1,3 @@
+User-agent: *
+Allow:/
+Sitemap: https://jerrychu.me/sitemap.xml
