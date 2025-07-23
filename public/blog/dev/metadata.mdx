@@ -46,12 +46,12 @@ Next에서 메타 태그를 설정하는 방법은 크게 `3가지 방법이` �
   - 화면 너비를 디바이스에 맞추고 기본 배율을 1로 설정합니다.
 - 다른 메타데이터 필드는 메타데이터 객체(정적 메타데이터의 경우) 또는 생성 메타데이터 함수(생성된 메타데이터의 경우)를 사용하여 정의할 수 있습니다.
 
-## 정적 metadata
+## 정적 메타데이터
 
 정적 메타데이터를 정의하려면 정적 layout.js 또는 page.js 파일에서 메타데이터 객체를 export합니다.
 예를 들어 블로그 경로에 제목과 설명을 추가하려면 아래와 같이 작성합니다.
 
-```tsx:example.tsx
+```tsx:app/layout.tsx
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -66,7 +66,7 @@ export default function Page() {}
 Next에 metadata 타입은 [링크](https://nextjs.org/docs/app/api-reference/functions/generate-metadata#types)에서 확인하시면 됩니다.
 들어가서 보시면 다양한 타입들이 많습니다 🙂
 
-## 정적 metadata 사용하기 (metadata)
+## 정적 메타데이터 사용하기 (metadata)
 
 아래 코드와 같이 config.ts 파일에 SEO 관련 정보를(title, description 등) 별도로 정의했고,
 RootLayout에 config.ts에 있는 seoConfig 변수를 import해서 정적 metadata를 적용해줬습니다.
@@ -374,7 +374,7 @@ export const HTML_LIMITED_BOT_UA_RE =
 추가적으로 우리나라 대표 검색 플랫폼의 네이버 서치 엔진은 어떤 방식인지 찾아봤습니다.
 
 네이버 서치 어드바이저의 자바스크립트 검색 최적화 가이드에 의하면, 네이버 검색로봇은 페이지를 수집할 때 자바스크립트를 포함해 HTML을 렌더링하고,
-이를 통해 보다 정확하게 페이지 내용을 분석하려고 시도한다고 합니다 👍
+이를 통해 정확하게 페이지 내용을 분석하려고 시도한다고 합니다 👍
 
 자세한 [렌더링 방식은 링크를 통해 확인하시면 됩니다~!](https://searchadvisor.naver.com/guide/seo-advanced-javascript)
 
