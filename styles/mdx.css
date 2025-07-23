@@ -128,6 +128,11 @@
     font-size: 0.8rem;
   }
 
+  pre.language-tsx,
+  pre.language-ts {
+    margin-top: 0;
+  }
+
   p code,
   li code {
     background-color: var(--color-thirdary);
