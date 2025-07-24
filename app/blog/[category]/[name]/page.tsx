@@ -1,9 +1,15 @@
-import { siteConfig } from '@/constants/config';
-import { PostCategory } from '@/types/blogType';
-import { calGetAllPosts } from '@/utils/dataset';
-import { calFormatDateToUS } from '@/utils/date';
-import { calJsonLd } from '@/utils/jsonLd';
+import { siteConfig } from '@/shared/constants/config';
+import { PostCategory } from '@/shared/types/blogType';
+import { calGetAllPosts } from '@/shared/utils/dataset';
+import { calFormatDateToUS } from '@/shared/utils/date';
+import { calJsonLd } from '@/shared/utils/jsonLd';
 import { Metadata } from 'next';
+
+// eslint-disable-next-line react-refresh/only-export-components
+export async function generateStaticParams() {
+  const posts = await calGetAllPosts();
+  return posts;
+}
 
 // eslint-disable-next-line react-refresh/only-export-components
 export async function generateMetadata({
@@ -64,12 +70,12 @@ export default async function Page({
   });
 
   return (
-    <>
+    <div className="m-auto max-w-[768px]">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <article className="post-mdx m-auto mt-[1rem] max-w-[768px] md:mt-[2rem]">
+      <article className="post-mdx mt-[1rem] mb-[5rem] md:mt-[2rem]">
         <header className="font-arita mb-[3rem] flex flex-col font-semibold">
           <h1 className="font-arita text-xl">{title}</h1>
           <time className="text-secondary mb-2 text-sm leading-7 font-light">
@@ -79,11 +85,6 @@ export default async function Page({
         </header>
         <Mdx />
       </article>
-    </>
+    </div>
   );
-}
-
-export async function generateStaticParams() {
-  const posts = await calGetAllPosts();
-  return posts;
 }

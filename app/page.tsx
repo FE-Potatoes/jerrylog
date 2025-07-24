@@ -1,6 +1,6 @@
-import GoogleAdsense from '@/components/common/GoogleAdsense';
-import HomePosts from '@/components/home/HomePosts';
-import { calGetAllPosts, calSortTimePosts } from '@/utils/dataset';
+import HomePosts from '@/features/home/HomePosts';
+import { GoogleAdsense } from '@/shared/ui';
+import { calGetAllPosts, calSortTimePosts } from '@/shared/utils/dataset';
 
 export default async function Home() {
   const allPosts = await calGetAllPosts();

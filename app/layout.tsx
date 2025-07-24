@@ -1,11 +1,10 @@
-import FloatingHeader from '@/components/common/FloatingHeader';
-import Footer from '@/components/layout/Footer';
-import Header from '@/components/layout/Header';
-import { seoConfig } from '@/constants/config';
-import { aritaFont, caveatFont, notoSansFont } from '@/constants/font';
-import CoreProvider from '@/providers/CoreProvider';
-import '@/styles/global.css';
-import { cn } from '@/utils/cn';
+import CoreProvider from '@/features/CoreProvider';
+import { seoConfig } from '@/shared/constants/config';
+import { aritaFont, caveatFont, notoSansFont } from '@/shared/constants/font';
+import '@/shared/styles/global.css';
+import { cn } from '@/shared/utils/cn';
+import { FloatingHeader } from '@/widgets';
+import { Footer, Header } from '@/widgets/layout';
 import type { Metadata } from 'next';
 
 // eslint-disable-next-line react-refresh/only-export-components

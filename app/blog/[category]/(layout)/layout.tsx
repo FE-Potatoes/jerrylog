@@ -1,6 +1,6 @@
-import { siteConfig } from '@/constants/config';
-import { PostCategory } from '@/types/blogType';
-import { calPostsInfo } from '@/utils/dataset';
+import { siteConfig } from '@/shared/constants/config';
+import { PostCategory } from '@/shared/types/blogType';
+import { calPostsInfo } from '@/shared/utils/dataset';
 import { Metadata } from 'next';
 
 // eslint-disable-next-line react-refresh/only-export-components
