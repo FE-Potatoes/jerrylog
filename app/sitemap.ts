@@ -1,6 +1,6 @@
-import { siteConfig } from '@/constants/config';
-import { PostMeta } from '@/types/blogType';
-import { calGetAllPosts } from '@/utils/dataset';
+import { siteConfig } from '@/shared/constants/config';
+import { PostMeta } from '@/shared/types/blogType';
+import { calGetAllPosts } from '@/shared/utils/dataset';
 import { MetadataRoute } from 'next';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {

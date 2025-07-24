@@ -1,6 +1,6 @@
 'use client';
 
-import ErrorButton from '@/components/common/ErrorButton';
+import { ErrorButton } from '@/shared/ui';
 import { useRouter } from 'next/navigation';
 
 export default function NotFoundPage() {
