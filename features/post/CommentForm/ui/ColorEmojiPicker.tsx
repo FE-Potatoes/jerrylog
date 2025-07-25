@@ -64,7 +64,7 @@ export default function ColorEmojiPicker({
           'bg-[#363636]': isDark,
         })}
       >
-        <div className="custom-scrollbar mx-3 flex gap-2 overflow-x-scroll">
+        <div className="custom-scrollbar mx-3 flex gap-2 overflow-x-scroll overflow-y-hidden">
           {ANIMAL_EMOJI_LIST.map((item) => (
             <button
               key={item.name}
