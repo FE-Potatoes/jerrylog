@@ -1,6 +1,6 @@
 import { siteConfig } from '@/shared/constants/config';
+import { cn } from '@/shared/lib/utils/cn';
 import { ContactType, ContactsIcon, LinkExternal } from '@/shared/ui';
-import { cn } from '@/shared/utils/cn';
 import Link from 'next/link';
 
 export function Footer() {

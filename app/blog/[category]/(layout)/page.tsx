@@ -1,11 +1,11 @@
 import { BlogIntroduce, BlogPosts, BlogTags } from '@/features/blog';
-import { PostCategory } from '@/shared/types/blogType';
 import {
   calGetPosts,
   calPostsInfo,
   calSortTimePosts,
   calTagPosts,
-} from '@/shared/utils/dataset';
+} from '@/shared/lib/utils/dataset';
+import { PostCategory } from '@/shared/types/blogType';
 
 export default async function page({
   params,

@@ -1,7 +1,7 @@
+import { calFormatDateToDot } from '@/shared/lib/utils/date';
 import { PostCategory } from '@/shared/types/blogType';
 import { LinkExternal } from '@/shared/ui';
 import { ExternalIcon } from '@/shared/ui/icons';
-import { calFormatDateToDot } from '@/shared/utils/date';
 import Image from 'next/image';
 import Link from 'next/link';
 

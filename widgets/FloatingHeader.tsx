@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 
-import { cn } from '@/shared/utils/cn';
+import { cn } from '@/shared/lib/utils/cn';
 
 import { Header } from './layout';
 
