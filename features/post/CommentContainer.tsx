@@ -2,7 +2,7 @@ import { use } from 'react';
 
 import { PostCategory } from '@/shared/types/blogType';
 
-import { CommentHeader, CommentList } from './';
+import { CommentHeader, CommentList } from '.';
 import { getCommentList } from './CommentForm/apis/commentActions';
 import { CommentForm } from './CommentForm/ui/CommentForm';
 

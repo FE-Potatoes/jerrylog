@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useTransition } from 'react';
 import { ColorResult } from 'react-color';
 
 import {
@@ -15,8 +15,6 @@ interface UseCommentButtonProps {
 }
 
 export function useCommentButton() {
-  const [isDisabledSubmit, setIsDisabledSubmit] = useState(true);
-
   // * 랜덤 닉네임 및 이모지 변경
   const onClickRandomNickname = ({
     onChangeName,
@@ -35,26 +33,37 @@ export function useCommentButton() {
   };
 
   // * 댓글 등록 함수
-  const handleCommentSubmit = async (
+  const [isPending, startTransition] = useTransition();
+  const [isDisabledSubmit, setIsDisabledSubmit] = useState(false);
+
+  const isDisabledButton = isPending || isDisabledSubmit;
+
+  const onSubmitComment = (
     e: React.FormEvent<HTMLFormElement>,
     body: CommentBody,
     category: PostCategory,
+    onSuccess?: () => void,
+    onError?: (error: Error) => void,
   ) => {
     e.preventDefault();
 
-    try {
-      await postComment(body, category);
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setIsDisabledSubmit(true);
-    }
+    startTransition(() => {
+      postComment(body, category)
+        .then(() => {
+          onSuccess?.();
+        })
+        .catch((error) => {
+          console.error('댓글 등록 실패:', error);
+          onError?.(error);
+        });
+    });
   };
 
   return {
-    isDisabledSubmit,
+    isPending,
+    isDisabledButton,
     setIsDisabledSubmit,
     onClickRandomNickname,
-    handleCommentSubmit,
+    onSubmitComment,
   };
 }

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { ColorResult } from 'react-color';
 
 import { ANIMAL_EMOJI_LIST } from '@/shared/constants/emoji';
@@ -15,7 +15,10 @@ export function useEmojiPicker() {
   );
   const [isEmojiPicker, setIsEmojiPicker] = useState(false);
 
-  const onClickOpenPicker = () => setIsEmojiPicker(true);
+  const onClickTogglePicker = useCallback(
+    () => setIsEmojiPicker((prev) => !prev),
+    [],
+  );
   const onSelectEmoji = (emoji: string) => setEmoji(emoji);
 
   const onChangeColor = (color: ColorResult) => {
@@ -27,7 +30,7 @@ export function useEmojiPicker() {
     emoji,
     isEmojiPicker,
     backgroundColor,
-    onClickOpenPicker,
+    onClickTogglePicker,
     onChangeColor,
     onSelectEmoji,
   };

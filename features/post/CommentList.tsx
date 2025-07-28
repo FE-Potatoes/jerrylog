@@ -1,5 +1,5 @@
-import { ResCommentItem } from './CommentForm/apis/commentActions';
-import { CommentItem } from './CommentItem';
+import { ResCommentItem } from '@/features/post/CommentForm/apis/commentActions';
+import { CommentItem } from '@/features/post/CommentItem';
 
 export const CommentList = ({
   commentList,

@@ -1,17 +1,17 @@
 'use client';
 
-import { useRef } from 'react';
+import { useCallback, useRef } from 'react';
 
-import { useCommentButton } from '@/features/post/CommentForm/model/useCommentButton';
-import { useCommentName } from '@/features/post/CommentForm/model/useCommentName';
-import { useEmojiPicker } from '@/features/post/CommentForm/model/useEmojiPicker';
+import {
+  useCommentButton,
+  useCommentName,
+  useEmojiPicker,
+} from '@/features/post/CommentForm/model';
 import { cn } from '@/shared/lib/utils/cn';
 import { PostCategory } from '@/shared/types/blogType';
+import FocusTrap from '@/shared/ui/FocusTrap';
 
-import ColorEmojiPicker from './ColorEmojiPicker';
-import CommentTextarea from './CommentTextarea';
-import Emoji from './Emoji';
-import NameInput from './NameInput';
+import { ColorEmojiPicker, CommentTextarea, Emoji, NameInput } from './';
 
 export const CommentForm = ({
   name: postName,
@@ -23,37 +23,39 @@ export const CommentForm = ({
   // * 댓글 닉네임
   const { name, onChangeName } = useCommentName();
 
-  // * 댓글 내용
-  const textareaRef = useRef<HTMLTextAreaElement>(null);
-  const onChangeCommentTextarea = (
-    e: React.ChangeEvent<HTMLTextAreaElement>,
-  ) => {
-    const { value } = e.target;
-    if (textareaRef.current) textareaRef.current.value = value;
-    setIsDisabledSubmit(!value || !name);
-  };
-
   // * 댓글 이모지
   const {
     ref,
     emoji,
     isEmojiPicker,
     backgroundColor,
-    onClickOpenPicker,
+    onClickTogglePicker,
     onChangeColor,
     onSelectEmoji,
   } = useEmojiPicker();
 
   // * 댓글 버튼
   const {
-    isDisabledSubmit,
+    isPending,
+    isDisabledButton,
     setIsDisabledSubmit,
     onClickRandomNickname,
-    handleCommentSubmit,
+    onSubmitComment,
   } = useCommentButton();
 
+  // * 댓글 내용
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const onChangeCommentTextarea = useCallback(
+    (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+      const { value } = e.target;
+      if (textareaRef.current) textareaRef.current.value = value;
+      setIsDisabledSubmit(!value || !name);
+    },
+    [name, setIsDisabledSubmit],
+  );
+
   // * 댓글 등록 함수
-  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const body = {
@@ -64,20 +66,21 @@ export const CommentForm = ({
       post_slug: postName,
     };
 
-    await handleCommentSubmit(e, body, category).then(() => {
+    onSubmitComment(e, body, category, () => {
+      setIsDisabledSubmit(true);
       textareaRef.current!.value = '';
     });
   };
 
   return (
     <form className="font-notosans flex flex-col gap-2" onSubmit={onSubmit}>
-      <div className="grid gap-2 md:grid-cols-[1fr_2fr]">
+      <div className="relative grid gap-2 md:grid-cols-[1fr_2fr]">
         <div className="flex flex-col gap-2">
-          <div className="relative flex items-center gap-[10px] text-sm">
+          <div className="flex items-center gap-[10px] text-sm">
             <Emoji
               emojiValue={emoji}
               backgroundColor={backgroundColor}
-              onClickOpenPicker={onClickOpenPicker}
+              onClickTogglePicker={onClickTogglePicker}
             />
             <NameInput
               value={name}
@@ -85,15 +88,22 @@ export const CommentForm = ({
               maxLength={10}
               onChangeName={onChangeName}
             />
-            {isEmojiPicker && (
+          </div>
+          {isEmojiPicker && (
+            <FocusTrap
+              className="absolute top-13 z-[100] md:top-12"
+              isActive={isEmojiPicker}
+              isAutoFocus={true}
+            >
               <ColorEmojiPicker
                 wrapperRef={ref}
                 color={backgroundColor}
+                onClickTogglePicker={onClickTogglePicker}
                 onChangeColor={onChangeColor}
                 onSelectEmoji={onSelectEmoji}
               />
-            )}
-          </div>
+            </FocusTrap>
+          )}
           <button
             aria-label="랜덤 닉네임 및 이모지 변경"
             type="button"
@@ -115,15 +125,14 @@ export const CommentForm = ({
         />
       </div>
       <button
-        aria-disabled={isDisabledSubmit}
         type="submit"
         className={cn(
           'ml-auto inline-flex w-[120px] items-center justify-center rounded-sm bg-blue-500 px-[12px] py-[7px] text-xs text-gray-50',
-          isDisabledSubmit && 'bg-blue-300',
+          isDisabledButton && 'cursor-not-allowed bg-blue-300',
         )}
-        disabled={isDisabledSubmit}
+        disabled={isDisabledButton}
       >
-        댓글 남기기
+        {isPending ? '로딩중...' : '댓글 남기기'}
       </button>
     </form>
   );
