@@ -1,8 +1,11 @@
+import { Suspense } from 'react';
+
+import { CommentContainer } from '@/features/post';
 import { siteConfig } from '@/shared/constants/config';
+import { calGetAllPosts } from '@/shared/lib/utils/dataset';
+import { calFormatDateToUS } from '@/shared/lib/utils/date';
+import { calJsonLd } from '@/shared/lib/utils/jsonLd';
 import { PostCategory } from '@/shared/types/blogType';
-import { calGetAllPosts } from '@/shared/utils/dataset';
-import { calFormatDateToUS } from '@/shared/utils/date';
-import { calJsonLd } from '@/shared/utils/jsonLd';
 import { Metadata } from 'next';
 
 // eslint-disable-next-line react-refresh/only-export-components
@@ -85,6 +88,9 @@ export default async function Page({
         </header>
         <Mdx />
       </article>
+      <Suspense fallback={<>loading...</>}>
+        <CommentContainer name={name} category={category} />
+      </Suspense>
     </div>
   );
 }

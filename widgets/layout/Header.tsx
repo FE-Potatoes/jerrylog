@@ -1,8 +1,8 @@
 'use client';
 
 import { siteConfig } from '@/shared/constants/config';
+import { cn } from '@/shared/lib/utils/cn';
 import { ThemeButton } from '@/shared/ui';
-import { cn } from '@/shared/utils/cn';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 

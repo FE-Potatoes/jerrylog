@@ -23,6 +23,10 @@
     cursor: pointer;
   }
 
+  button:disabled {
+    cursor: not-allowed;
+  }
+
   @media (min-width: 768px) {
     body {
       max-width: var(--container-contentWidth);
