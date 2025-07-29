@@ -11,6 +11,7 @@ import { cn } from '@/shared/lib/utils/cn';
 import { PostCategory } from '@/shared/types/blogType';
 import FocusTrap from '@/shared/ui/FocusTrap';
 
+import { sendCommentEmail } from '../apis/commentActions';
 import { ColorEmojiPicker, CommentTextarea, Emoji, NameInput } from './';
 
 export const CommentForm = ({
@@ -66,8 +67,13 @@ export const CommentForm = ({
       post_slug: postName,
     };
 
-    onSubmitComment(e, body, category, () => {
+    onSubmitComment(e, body, category, async () => {
       setIsDisabledSubmit(true);
+      await sendCommentEmail({
+        postname: postName,
+        category,
+        content: textareaRef.current!.value,
+      });
       textareaRef.current!.value = '';
     });
   };

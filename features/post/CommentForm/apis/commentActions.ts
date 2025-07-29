@@ -12,6 +12,8 @@ export interface CommentBody {
   post_slug: string;
 }
 
+const url = process.env.NEXT_PUBLIC_URL;
+
 export async function postComment(body: CommentBody, category: PostCategory) {
   const { error } = await supabase.from('comments').insert(body);
 
@@ -44,4 +46,22 @@ export async function getCommentList(postName: string) {
   }
 
   return { data: (data ?? []) as ResCommentItem[], error };
+}
+
+export async function sendCommentEmail({
+  postname,
+  category,
+  content,
+}: {
+  postname: string;
+  category: string;
+  content: string;
+}) {
+  await fetch(`${url}/api/send-comment-email`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ postname, category, content }),
+  });
 }
