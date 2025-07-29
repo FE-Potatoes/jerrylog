@@ -30,7 +30,7 @@ export async function POST(req: Request) {
     `;
 
     const res = await resend.emails.send({
-      from: 'Acme <onboarding@resend.dev>',
+      from: 'Jerrychu blog <support@jerry.me>',
       to: ['khchu1220@naver.com'],
       subject: `${postname}에 댓글이 달렸습니다.`,
       html,
