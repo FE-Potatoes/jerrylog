@@ -1,0 +1,179 @@
+export const metadata = {
+  title: 'Next.js SEO 최적화 2편 (robots, sitemap, JSON-LD)',
+  description:
+    'Next SEO 최적화를 위한 robots, sitemap, JSON-LD 설정 관련한 글입니다.',
+  icon: '',
+  image: '/images/blog/dev/metadata.png',
+  link: '',
+  tags: [
+    '블로그 SEO 설정',
+    'seo 점수 개선',
+    'JSON-LD',
+    'robots.ts',
+    'robots.txt',
+    'sitemap.ts',
+  ],
+  category: 'dev',
+  date: '2025-07-29 17:18:11',
+  author: 'JerryChu',
+};
+
+> 블로그를 배포를 위한 1단계 과정 metadata 설정 후 robots, sitemap 설정해습니다. 또한 SEO 향상을 위해 추가적으로 JSON-LD 설정을 진행했습니다.
+
+## robots.txt, robots.ts란?
+
+간단하게 robots.txt는 웹 사이트의 루트 파일 안에 존재하는 파일로 **검색 엔진 로봇에게 웹사이트의 어떤 부분은 크롤링해도 되고,
+어떤 부분은 크롤링 하면 안되는지 알려주는 파일입니다.**
+
+[자세한 것은 링크를 참고해주세요](https://developers.google.com/search/docs/crawling-indexing/robots/intro?hl=ko)
+
+그렇다면 robots.txt와 robots.ts의 차이점이 뭘까요?
+Next.js에서는 robots.txt 파일을 생성하는 두 가지 방법이 존재합니다.
+
+### 방법 1: public 폴더에 robots.txt 파일 생성
+
+```txt:public/robots.txt
+User-Agent: *
+Allow: /
+Disallow: /private/
+
+Sitemap: https://jerrychu.me/sitemap.xml
+```
+
+가장 간단한 방법입니다. 프로젝트 public 안에 robots.txt 파일을 작성하면 됩니다.
+하지만 이 방법은 robots.txt 파일을 **정적 파일로 처리하기 때문에 동적으로 생성할 수 없습니다.**
+
+### 방법 2: app 폴더에 robots.ts 파일 생성
+
+```tsx:app/robots.ts
+import { siteConfig } from '@/shared/constants/config';
+import { MetadataRoute } from 'next';
+
+export default function robots(): MetadataRoute.Robots {
+  return {
+    rules: [
+      {
+        userAgent: '*',
+        allow: '/',
+      },
+    ],
+    sitemap: `${siteConfig.url}/sitemap.xml`,
+    host: siteConfig.url,
+  };
+}
+```
+
+Next.js app router에서는 robots.ts 파일을 작성하면 동적으로 robots.txt 파일을 생성할 수 있습니다.
+여기서 sitemap이라는 속성이 있는데 sitemap은 무엇일까요?
+
+sitemap을 통해 웹 사이트의 모든 페이지 목록을 검색 엔진에게 알려줄 수 있습니다.
+
+## sitemap.ts, sitemap.xml이란?
+
+sitemap.xml은 웹사이트의 모든 중요한 url을 제공해주는 XML 형식의 파일입니다.
+**즉 크롤러에게 sitemap.xml을 통해 우리 사이트에 이런 중요한 페이지들이 있으니 방문해달라고 요청하는 파일**입니다.
+
+sitemap.ts는 Next에서 app router를 활용해 sitemap을 동적으로 만들기 위한 파일입니다.
+그럼 2가지 방법을 사용해 sitemap을 생성해보겠습니다.
+
+### 방법 1: sitemap.xml
+
+```tsx:public/sitemap.xml
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://www.jerrychu.me/blog/dev</loc>
+    <lastmod>2025-07-29</lastmod>
+  </url>
+  <url>
+    <loc>https://www.jerrychu.me/blog/life</loc>
+    <lastmod>2025-07-29</lastmod>
+  </url>
+<!-- ... -->
+</urlset>
+```
+
+public 폴더에 sitemap.xml 파일을 생성하는 방법입니다.
+매우 간단하지만 모든 url을 수동으로 작성해야합니다.
+
+url이 추가되거나 변경될 때마다 수동으로 업데이트해야하므로 유지보수성이 떨어집니다.
+정적인 페이지 수가 적고, 변경이 거의 없는 사이트에 적합합니다.
+
+### 방법 2: sitemap.ts
+
+```tsx:app/sitemap.ts
+import { siteConfig } from '@/shared/constants/config';
+import { calGetAllPosts } from '@/shared/lib/utils/dataset';
+import { PostMeta } from '@/shared/types/blogType';
+import { MetadataRoute } from 'next';
+
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const allPosts = await calGetAllPosts();
+  const baseUrl = siteConfig.url;
+
+  const posts = allPosts.map((post: PostMeta) => ({
+    url: `${baseUrl}/blog/${post.category}/${post.name}`,
+    lastModified: new Date(post.date).toISOString().split('T')[0],
+  }));
+
+  const routes = ['/blog/dev', '/blog/life'].map((route) => ({
+    url: `${baseUrl}${route}`,
+    lastModified: new Date().toISOString().split('T')[0],
+  }));
+
+  return [...routes, ...posts];
+}
+```
+
+제 블로그의 경우는 동적인 페이지가 많아서 sitemap.ts를 사용했습니다.
+calGetAllPosts는 모든 게시물 데이터를 가져오는 함수입니다.
+블로그의 모든 게시물 데이터를 가져와서 sitemap에 추가헀습니다.
+
+페이지 업데이트 및 블로그 게시물이 추가될 때 마다 자동으로 업데이트되므로 유지보수성이 높습니다.
+app router를 사용하신다면 sitemap.ts를 사용하시는 것을 추천드립니다.
+
+이렇게 생성된 sitemap.xml 파일을 확인해보면 아래와 같이 생성된 것을 확인할 수 있습니다.
+
+![sitemap.xml](/images/blog/dev/sitemap.png)
+
+추가적으로 SEO를 위해 [구글 검색 센터에서 권장하는 JSON-LD](https://developers.google.com/search/docs/appearance/structured-data/intro-structured-data?hl=ko)를 작성해줬습니다.
+
+## JSON-LD란?
+
+간단하게 얘기하면 구조화된 데이터를 표시하는데 사용되는 JSON 기반의 데이터 형식입니다.
+쉽게 말해, **웹페이지에 있는 정보들이 무엇을 의미하는지 검색엔진이 보다 쉽게 파악할 수 있도록 하는 데이터**라고 보시면됩니다.
+구조화된 데이터 **JSON-LD는 웹표준**이기 때문에 다른 플랫폼에서도 적용됩니다.
+
+![JSON-LD example](/images/blog/dev/jsonld-example.png)
+
+현재 제 포스트에 올라가 있는 JSON-LD입니다.
+headline을 보고 제목이 무엇인지, datePublished를 보고 언제 게시되었는지, author를 보고 누가 썼는지 등을 알 수 있습니다.
+
+- [JSON-LD BlogPosting의 속성 관련 링크입니다 🙂](https://schema.org/BlogPosting)
+- [구글에도 기능 가이드가 있습니다 👍](https://developers.google.com/search/docs/appearance/structured-data/article?hl=ko)
+
+## 구조화된 데이터를 꼭 추가해야할까요?
+
+구조화된 데이터를 추가하지 않아도 검색엔진은 웹페이지의 정보를 수집합니다.
+하지만 **구조화된 데이터를 추가하면 사용자에게 눈길을 끄는 검색결과를 제공해 웹사이트를 더 잘 노출시킬 수 있습니다.
+이런 것을 리치 결과**라고 합니다.
+
+### 리치결과란?
+
+예를 들어 일반적으로 텍스트로 된 파란색 링크보다 더 많은 내용을 보여줄 수 있습니다. 이미지나, 비디오, 캐러셀 등 텍스트가 아닌
+다른 요소가 포함될 수 있는 것을 리치 결과라고 합니다.
+
+![리치 결과](/images/blog/dev/rich-result.jpeg)
+
+## 그렇다면 왜 JSON-LD를 사용해야할까요?
+
+구조화된 데이터는 JSON-LD만 있는 것이 아닙니다. 마이크로데이터, RDFa, XML 등을 사용할 수 있습니다.
+
+일단 구글 검색엔진이 JSON-LD를 가장 우선적으로 지원하기 때문에 사용하는 것입니다.
+또한 JSON-LD는 JSON 형식으로 작성되기 때문에 가독성도 좋고, 데이터를 쉽게 관리할 수 있습니다.
+
+## 리치 결과 테스트
+
+아래 링크를 통해 리치 결과를 테스트할 수 있습니다~!
+구조화된 데이터인 JSON-LD를 통해 한층 더 SEO를 높혀보는 것이 어떨까요? 🙂
+
+[리치 결과 테스트 링크입니다.](https://search.google.com/test/rich-results)
