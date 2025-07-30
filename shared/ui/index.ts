@@ -1,5 +1,4 @@
 export { ContactsIcon } from './ContactsIcon';
-export { ErrorButton } from './ErrorButton';
 export { GoogleAdsense } from './GoogleAdsense';
 export { IconButton } from './IconButton';
 export { LinkExternal } from './LinkExternal';

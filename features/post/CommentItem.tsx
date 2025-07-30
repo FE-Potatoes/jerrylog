@@ -28,7 +28,7 @@ export const CommentItem = React.memo(function CommentItem({
         </div>
         <span className="font-semibold">{name}</span>
       </div>
-      <p className="whitespace-pre">{content}</p>
+      <p className="whitespace-pre-wrap">{content}</p>
     </li>
   );
 });
