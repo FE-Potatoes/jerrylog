@@ -6,6 +6,8 @@ import { CommentHeader, CommentList } from '.';
 import { getCommentList } from './CommentForm/apis/commentActions';
 import { CommentForm } from './CommentForm/ui/CommentForm';
 
+export const dynamic = 'force-dynamic';
+
 export function CommentContainer({
   name,
   category,

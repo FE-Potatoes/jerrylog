@@ -8,7 +8,7 @@ import { calJsonLd } from '@/shared/lib/utils/jsonLd';
 import { PostCategory } from '@/shared/types/blogType';
 import { Metadata } from 'next';
 
-export const dynamic = 'force-dynamic';
+export const dynamic = 'force-static';
 
 // eslint-disable-next-line react-refresh/only-export-components
 export async function generateStaticParams() {
