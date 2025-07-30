@@ -57,7 +57,7 @@ export async function sendCommentEmail({
   category: string;
   content: string;
 }) {
-  await fetch(`${url}/api/send-comment-email`, {
+  fetch(`${url}/api/send-comment-email`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

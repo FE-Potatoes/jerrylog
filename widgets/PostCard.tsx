@@ -30,14 +30,15 @@ export function PostCard({
   // ** Content 컴포넌트
   const commonContent = (
     <>
-      <div className="relative aspect-[5/3]">
+      <div className="bg-thirdary relative aspect-[5/3] rounded-t-lg">
         <Image
           className="rounded-t-lg object-cover"
           src={imageSrc}
           alt={title}
           fill
+          quality={75}
           priority
-          sizes="(max-width: 768px) 100vw, 50vw"
+          sizes="(max-width: 768px) 83.44vw, 21.56vw"
         />
       </div>
       <div className="bg-thirdary relative flex-[1] rounded-b-lg px-4 pt-3 pb-2">
