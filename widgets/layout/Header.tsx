@@ -23,6 +23,7 @@ export const Header = () => {
                 'font-caveat text-xl',
                 pathname === item.href && 'font-semibold',
               )}
+              prefetch={true}
             >
               {item.label}
             </Link>
