@@ -43,19 +43,19 @@ export function useCommentButton() {
     body: CommentBody,
     category: PostCategory,
     onSuccess?: () => void,
-    onError?: (error: Error) => void,
   ) => {
     e.preventDefault();
 
-    startTransition(() => {
-      postComment(body, category)
-        .then(() => {
-          onSuccess?.();
-        })
-        .catch((error) => {
-          console.error('댓글 등록 실패:', error);
-          onError?.(error);
-        });
+    startTransition(async () => {
+      try {
+        await postComment(body, category);
+        setIsDisabledSubmit(true);
+
+        onSuccess?.();
+      } catch (error) {
+        console.error('댓글 등록 실패:', error);
+        throw new Error('댓글 등록 실패');
+      }
     });
   };
 

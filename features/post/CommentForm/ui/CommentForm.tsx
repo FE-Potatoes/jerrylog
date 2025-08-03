@@ -68,7 +68,6 @@ export const CommentForm = ({
     };
 
     onSubmitComment(e, body, category, () => {
-      setIsDisabledSubmit(true);
       sendCommentEmail({
         postname: postName,
         category,
