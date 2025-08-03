@@ -77,6 +77,7 @@ export function PostCard({
     <Link
       href={`/blog/${category}/${name}`}
       className="flex h-full cursor-pointer flex-col rounded-t-lg"
+      prefetch={true}
     >
       {commonContent}
     </Link>
