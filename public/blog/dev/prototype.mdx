@@ -1,0 +1,260 @@
+export const metadata = {
+  title: '프로토타입과 포로토타입 상속',
+  description:
+    'prototype과 prototype 상속에 대해 알아보고, 이를 활용한 객체지향 프로그래밍의 기초를 다집니다.',
+  icon: '',
+  image: '/images/blog/dev/javascript.webp',
+  link: '',
+  tags: ['prototype', '프로토타입', '프로로타입 상속'],
+  category: 'dev',
+  date: '2025-09-25 14:15:00',
+  author: 'JerryChu',
+};
+
+> 프로토타입에 대한 개념을 다시 학습하며 작성하였습니다. 이 글은 [자바스크립트 프로토타입 링크](https://ko.javascript.info/function-prototype) 를 참고하여 작성되었습니다.
+
+## 자바스크립트 프로토타입 상속
+
+- 자바스크립트 객체는 숨긴 속성인 프로토타입을 갖음
+- 이 값은 null 또는 다른 객체에 대한 참조가 됨
+- 다른 객체를 참조하는 경우 참조 대상을 포로토타입이라고 부름
+
+![prototype image](/images/blog/dev/prototype-1.png)
+
+## 자바스크립트 프로토타입의 동작 방식
+
+1. 객체에서 속성을 읽을 때 해당 속성이 없다면 프로토타입의 속성을 찾음
+2. 프로그래밍에서는 이런 동작 방식을 프로토타입 상속이라고 부름
+3. [[Prototype]] 속성은 내부 속성이고, 숨김 속성이지만 다양한 방법을 통해 개발자가 설정 가능
+
+```jsx
+let popupState = {
+  isOpen: false,
+  open: function () {
+    console.log('popup opening');
+    this.isOpen = true;
+  },
+  close: function () {
+    console.log('popup closing');
+    this.isOpen = true;
+  },
+};
+
+let somethingPopup = {
+  name: 'Something Popup',
+  __proto__: popupState,
+};
+```
+
+위 코드와 같이 **proto** 를 사용하면 값을 설정 가능
+
+- **proto**는 Prototype과 다름
+- **proto**는 Prototype의 getter이자 setter
+- 최근 **proto**를 통한 프로토타입을 설정하지 않고 Object.getPrototypeOf, Object.setPrototypeOf을 사용해서 get, set 설정을 함
+
+아래 코드에서 somethingPopup에서 속성을 얻고 싶은데 없다면 popupState의 속성을 얻게 됨
+
+```jsx
+let popupState = {
+  isOpen: false,
+  open: function () {
+    console.log('popup opening');
+    this.isOpen = true;
+  },
+  close: function () {
+    console.log('popup closing');
+    this.isOpen = true;
+  },
+};
+
+let somethingPopup = {
+  name: 'Something Popup',
+  __proto__: popupState,
+};
+
+console.log(somethingPopup.isOpen); // false
+somethingPopup.open();
+console.log(somethingPopup.isOpen); // true
+```
+
+- somethingPopup의 프로토타입은 popupState
+- somethingPopup는 popupState의 상속을 받는다고 할 수 있음
+- 여기서 somethingPopup 객체의 isOpen, open, close는 상속 속성이라고 함
+
+## 그렇다면 자바스크립트의 프로토타입 체인은 무엇인가?
+
+```jsx
+let popupAction = {
+  open: function () {
+    console.log('popup opening');
+    this.isOpen = true;
+  },
+  close: function () {
+    console.log('popup closing');
+    this.isOpen = false;
+  },
+};
+
+let popupState = {
+  isOpen: false,
+  __proto__: popupAction,
+};
+
+let somethingPopup = {
+  name: 'Something Popup',
+  __proto__: popupState,
+};
+
+console.log(somethingPopup.isOpen); // false
+somethingPopup.open(); // popup opening
+console.log(somethingPopup.isOpen); // true
+somethingPopup.close(); // popup closing
+console.log(somethingPopup.isOpen); // false
+```
+
+위코드를 보며 중요한 포인트는 프로토타입 체인 탐색에 있음. 어떤 프로퍼티나 메서드를 찾을 때, JS는 자신 → 프로토타입 → 상위 프로토타입 순서로 탐색함.
+
+메서드 안의 this: 프로토타입에서 정의된 메서드라도, 호출한 객체(this) 에 프로퍼티를 직접 생성/변경함.
+즉, open/close는 popupAction에 정의돼 있지만, 실제 isOpen은 somethingPopup 객체에 생김.
+따라서 각 객체는 같은 "동작(open/close)"을 공유하지만, 상태(isOpen)는 독립적으로 가질 수 있음.
+
+**프로토타입 체이닝에는 세 가지 제약사항**
+
+1. 순환참조가 허용되지 않음.
+2. \_\_proto의 값은 null 또는 객체만 허용함, 여기서 객체는 오직 하나만의 [[Prototype]]만 있을 수 있음
+3. 직접적으로 메서드 할당했을 경우 프로토타입의 메서드가 동작하지 않음
+
+```jsx
+let popupAction = {
+  open: function () {
+    console.log('popup opening');
+    this.isOpen = true;
+  },
+  close: function () {
+    console.log('popup closing');
+    this.isOpen = false;
+  },
+};
+
+let popupState = {
+  isOpen: false,
+  __proto__: popupAction,
+};
+
+let somethingPopup = {
+  name: 'Something Popup',
+  __proto__: popupState,
+};
+
+somethingPopup.open = function () {
+  console.log('somethingPopup custom open');
+};
+
+console.log(somethingPopup);
+somethingPopup.open();
+console.log(somethingPopup.isOpen);
+```
+
+getter와 setter를 통한 호출
+
+```jsx
+let userBase = {
+  get fullName() {
+    return `${this.firstName} ${this.lastName}`;
+  },
+  set fullName(value) {
+    [this.firstName, this.lastName] = value.split(' ');
+  },
+};
+
+let user = {
+  firstName: 'Chu',
+  lastName: 'hoon',
+  __proto__: userBase,
+};
+
+console.log(user.fullName); // Chu hoon
+user.fullName = 'Park Ji-sung';
+console.log(user.fullName); // Park Ji-sung
+```
+
+## this는 프로토타입의 영향을 받지 않는다
+
+this는 자신의 객체를 가르킴
+
+```jsx
+let modalAction = {
+  open: function () {
+    console.log('modal opening');
+    this.isOpen = true;
+  },
+  close: function () {
+    console.log('modal closing');
+  },
+};
+
+let specialModal = {
+  name: 'Special Modal',
+  __proto__: modalAction,
+};
+
+console.log(specialModal.isOpen); // undefined
+specialModal.open(); // modal opening
+console.log(specialModal.isOpen); // true
+```
+
+## 반복문 차이
+
+```jsx
+console.log('------------------------');
+console.log('for in');
+for (let key in specialModal) {
+  console.log(key);
+}
+
+// --------------------------------
+// for in
+// name
+// isOpen
+// open
+// close
+
+console.log('------------------------');
+console.log('Object.keys');
+console.log(Object.keys(specialModal));
+
+// --------------------------------
+// Object.keys
+// [ 'name', 'isOpen' ]
+```
+
+---
+
+## 사용하는 객체는 Prototype을 가지고 있다
+
+```jsx
+let obj = {};
+```
+
+```jsx
+alert(obj.__proto__ === Object.prototype); // true
+
+alert(obj.toString === obj.__proto__.toString); //true
+alert(obj.toString === Object.prototype.toString); //true
+
+// Object.prototype.__proto__ // null
+```
+
+## 다양한 내장 객체의 프로토 타입
+
+- Array, Date, Function 내장 객체들 또는 프로토타입에 메서드를 저장함
+- 함수, 배열의 프로토타입 체인은 어떻게 되어 있나요?
+  ![prototype 체인](/images/blog/dev/prototype-2.png)
+
+## 원시 값
+
+- 원시 타입의 값의 속성에 접근하려고하면 내장 생성자 String, Number, Boolean을 사용하는 임시 래퍼 객체가 생성됨. 임시 래퍼 객체는 메서드를 제공 후 사라짐
+- null, undefined는 래퍼 객체가 없음
+
+- 내장 프로토타입 수정은 가능하지만 되도록 변경하지 않아야함
+- 원하지 않는 동작을 실행시킬 수 있고, 자바스크립트 엔진이 수정 전에 최적화 되어 있기 때문에 속도 차이가 나게 됨
