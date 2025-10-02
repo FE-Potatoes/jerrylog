@@ -2,7 +2,7 @@ import { Suspense } from 'react';
 
 import HomePosts from '@/features/home/HomePosts';
 import { calGetAllPosts, calSortTimePosts } from '@/shared/lib/utils/dataset';
-import GoogleAdsense from '@/shared/ui/GoogleAdsense';
+import { GoogleAdsense } from '@/shared/ui';
 
 export default async function Home() {
   const allPosts = await calGetAllPosts();
