@@ -1,4 +1,9 @@
-export type PostCategory = 'dev' | 'life';
+export const PostCategory = {
+  Dev: 'dev',
+  Life: 'life',
+} as const;
+
+export type PostCategory = (typeof PostCategory)[keyof typeof PostCategory];
 export type PostMeta = {
   author: string;
   category: PostCategory;

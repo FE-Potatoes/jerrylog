@@ -1,6 +1,8 @@
+import { Suspense } from 'react';
+
 import HomePosts from '@/features/home/HomePosts';
 import { calGetAllPosts, calSortTimePosts } from '@/shared/lib/utils/dataset';
-import { GoogleAdsense } from '@/shared/ui';
+import GoogleAdsense from '@/shared/ui/GoogleAdsense';
 
 export default async function Home() {
   const allPosts = await calGetAllPosts();
@@ -29,7 +31,15 @@ export default async function Home() {
       </div>
       <h2 className="font-caveat mb-4 text-3xl">Recent Post</h2>
       <HomePosts changesImagesPosts={changesImagesPosts} />
-      <GoogleAdsense />
+      <Suspense fallback={<>loading...</>}>
+        <GoogleAdsense
+          adSlot="6017613357"
+          adFormat="auto"
+          style={{
+            marginTop: '2rem',
+          }}
+        />
+      </Suspense>
     </div>
   );
 }

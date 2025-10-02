@@ -6,6 +6,7 @@ import { calGetAllPosts } from '@/shared/lib/utils/dataset';
 import { calFormatDateToUS } from '@/shared/lib/utils/date';
 import { calJsonLd } from '@/shared/lib/utils/jsonLd';
 import { PostCategory } from '@/shared/types/blogType';
+import GoogleAdsense from '@/shared/ui/GoogleAdsense';
 import { Metadata } from 'next';
 
 // eslint-disable-next-line react-refresh/only-export-components
@@ -61,7 +62,7 @@ export default async function Page({
 
   const { title, date, author, description } = metadata;
 
-  const categoryLabel = category === 'dev' ? 'Dev' : 'Life';
+  const categoryLabel = category === PostCategory.Dev ? 'Dev' : 'Life';
   const transformDate = calFormatDateToUS(date);
 
   const jsonLd = calJsonLd({
@@ -86,10 +87,27 @@ export default async function Page({
           </time>
           <span className="text-secondary text-sm font-light">by {author}</span>
         </header>
+        <Suspense fallback={<>loading...</>}>
+          <GoogleAdsense
+            adSlot="6658213274"
+            adFormat="fluid"
+            adLayout="in-article"
+            style={{
+              textAlign: 'center',
+            }}
+          />
+        </Suspense>
         <Mdx />
       </article>
       <Suspense fallback={<>loading...</>}>
         <CommentContainer name={name} category={category} />
+        <GoogleAdsense
+          adSlot="7547367196"
+          adFormat="autorelaxed"
+          style={{
+            marginTop: '2rem',
+          }}
+        />
       </Suspense>
     </div>
   );
