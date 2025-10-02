@@ -1,5 +1,6 @@
 import { FunctionComponent } from 'react';
 
+import { siteConfig } from '@/shared/constants/config';
 import Script from 'next/script';
 
 export const GoogleAdSenseScript: FunctionComponent = () => {
@@ -9,7 +10,7 @@ export const GoogleAdSenseScript: FunctionComponent = () => {
   return (
     <Script
       async
-      src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4761019594552611"
+      src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${siteConfig.googleAdsenseId}`}
       crossOrigin="anonymous"
       strategy="afterInteractive"
     />

@@ -24,7 +24,7 @@ export function PostCard({
   description,
   link,
 }: PostProps) {
-  const categoryLabel = category === 'dev' ? 'Dev' : 'Life';
+  const categoryLabel = category === PostCategory.Dev ? 'Dev' : 'Life';
   const transformDate = calFormatDateToDot(date);
 
   // ** Content 컴포넌트

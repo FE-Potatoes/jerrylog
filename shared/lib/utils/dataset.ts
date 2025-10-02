@@ -59,15 +59,15 @@ export async function calGetPosts(type: PostCategory) {
 // 모든 Post 반환
 export async function calGetAllPosts() {
   const [devPosts, lifePosts] = await Promise.all([
-    calGetPosts('dev'),
-    calGetPosts('life'),
+    calGetPosts(PostCategory.Dev),
+    calGetPosts(PostCategory.Life),
   ]);
   const allPosts = [...devPosts, ...lifePosts];
   return allPosts;
 }
 
 export const calPostsInfo = (category: PostCategory) => {
-  if (category === 'dev')
+  if (category === PostCategory.Dev)
     return {
       metaTitle: 'jerrychu (제리추) / 프론트엔드 개발 블로그 작성글',
       metaDesc: 'jerrychu 개발 관련 블로그 포스트 모음',

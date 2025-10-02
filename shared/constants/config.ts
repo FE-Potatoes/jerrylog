@@ -10,6 +10,7 @@ export const siteConfig = {
   since: 2025,
   googleAnalyticsId: '',
   generator: 'Next.js',
+  googleAdsenseId: 'ca-pub-4761019594552611',
   applicationName: 'jerrychu (제리추) 블로그',
   author: {
     name: 'jerrychu',
@@ -55,7 +56,7 @@ export const seoConfig: Metadata = {
     google: 'YV2XiZ4p2B-EZQUYFMOORXahkH7uzy9A6vm6xZPP_t4',
     other: {
       'naver-site-verification': 'cd6fa7075e8d25586ca69d55a9b97c36db3600c6',
-      'google-adsense-account': 'ca-pub-4761019594552611',
+      'google-adsense-account': siteConfig.googleAdsenseId,
     },
   },
   openGraph: {

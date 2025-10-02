@@ -10,7 +10,7 @@ import { PostCategory } from '@/shared/types/blogType';
 import { Metadata } from 'next';
 
 export async function generateStaticParams() {
-  return [{ category: 'dev' }, { category: 'life' }];
+  return [{ category: PostCategory.Dev }, { category: PostCategory.Life }];
 }
 
 export async function generateMetadata({
