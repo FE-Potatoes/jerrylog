@@ -1,6 +1,7 @@
 import CoreProvider from '@/features/CoreProvider';
 import { seoConfig } from '@/shared/constants/config';
 import { aritaFont, caveatFont, notoSansFont } from '@/shared/constants/font';
+import { GoogleAdSenseScript } from '@/shared/lib/adsense/GoogleAdsenseScript';
 import { cn } from '@/shared/lib/utils/cn';
 import '@/shared/styles/global.css';
 import { FloatingHeader } from '@/widgets';
@@ -17,6 +18,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        <GoogleAdSenseScript />
+      </head>
       <body
         className={cn(
           caveatFont.variable,
