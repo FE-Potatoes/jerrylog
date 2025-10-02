@@ -6,7 +6,7 @@ import { calGetAllPosts } from '@/shared/lib/utils/dataset';
 import { calFormatDateToUS } from '@/shared/lib/utils/date';
 import { calJsonLd } from '@/shared/lib/utils/jsonLd';
 import { PostCategory } from '@/shared/types/blogType';
-import GoogleAdsense from '@/shared/ui/GoogleAdsense';
+import { GoogleAdsense } from '@/shared/ui';
 import { Metadata } from 'next';
 
 export const dynamic = 'force-static';

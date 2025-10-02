@@ -10,7 +10,7 @@ interface AdComponentProps {
   adLayout?: string;
   style?: React.CSSProperties;
 }
-const GoogleAdsense: React.FC<AdComponentProps> = ({
+export const GoogleAdsense: React.FC<AdComponentProps> = ({
   adSlot,
   adFormat = 'auto',
   adLayout = '',
@@ -36,5 +36,3 @@ const GoogleAdsense: React.FC<AdComponentProps> = ({
     ></ins>
   );
 };
-
-export default GoogleAdsense;
