@@ -1,0 +1,98 @@
+export const metadata = {
+  title: 'Next.js',
+  description:
+    'Next SEO 최적화를 위한 robots, sitemap, JSON-LD 설정 관련한 글입니다.',
+  icon: '',
+  image: '/images/blog/dev/metadata.webp',
+  link: '',
+  tags: [
+    '블로그 SEO 설정',
+    'seo 점수 개선',
+    'JSON-LD',
+    'robots.ts',
+    'robots.txt',
+    'sitemap.ts',
+  ],
+  category: 'dev',
+  date: '2025-07-29 17:18:11',
+  author: 'JerryChu',
+};
+
+> 아는 방식대로 rsc prefetch가 동작하지 않아 현재의 Next.js 15 놓친 부분이 있을까 싶어 공식 문서를 다시 읽으며 작성했습니다.
+
+## 서버 컴포넌트
+
+- 경로의 레이아웃, 페이지에 맞춰 chunk로 분활됨
+- 서버 컴포넌트는 RSC 페이로드의 특수한 데이터 형식으로 렌더링 됨
+- 즉 클라이언트, RSC 페이로드는 HTML을 미리 렌더링하는 것에 사용 됨
+
+## 리액트 서버 컴포넌트 페이로드(RSC)란 무엇인가요?
+
+- RSC 페이로드는 렌더링된 React 서버 컴포넌트 트리의 압축된 바이너리 표현
+- 클라이언트에서 React가 브라우저의 DOM을 업데이트하는 데 사용함 (헷갈림 표현이)
+- RSC 페이로드에는 다음이 포함됨
+  - 서버 컴포넌트의 렌더링된 결과 (HTML)
+  - 클라이언트 컴포넌트가 렌더링될 위치에 대한 플레이스홀더와 해당 JavaScript 파일에 대한 참조를 위한 위치
+  - 서버 컴포넌트에서 클라이언트 컴포넌트로 전달된 모든 속성들
+
+## 클라이언트 컴포넌트
+
+- HTML은 사용자에게 경로의 빠른 비대화형 미리보기(CSR 하이드레이션 전을 의미)를 즉시 표시하는 데 사용됩니다. (HTML을 빠르게 보여줌, SEO 향상, FCP 성능 향상)
+- RSC 페이로드는 클라이언트 및 서버 컴포넌트 트리를 조정하는 데 사용됩니다. (서버와, 클라이언트 렌더를 구분하기 위해 사용)
+- 하이드레이션을 통해 작동
+
+## 하이드레이션이란 무엇인가요?
+
+하이드레이션은 정적 HTML을 대화형으로 만들기 위해 이벤트 핸들러를 DOM에 첨부하는 React의 프로세스입니다.
+
+## 후속 탐색 (유저가 웹앱 다른 페이지로 이동하는 것을 의미)
+
+- 즉각적인 탐색을 위해 RSC 페이로드가 프리페치되고 캐시됨
+- 클라이언트 컴포넌트는 서버에서 렌더링 되는 HTML 없이 클라이언트에서 완전히 렌더링됨
+  - ‘use client’가 붙은 컴포넌트는 서버에서 HTML로 만들어지지 않음
+  - 클라이언트가 자바스크립트 번들을 받아 RSC 페이로드에 포함된 props를 받아 클라이언트에서 처음부터 렌더링함
+
+## 여기서 의문점 (즉각적인 탐색을 위해 RSC 페이로드가 prefetch 되고 캐시한다고…? 근데 RSC 다시 요청하던데?)
+
+![image.png](attachment:a49a03fe-6245-4fa2-8001-fd88378d0e83:image.png)
+
+- Next 15부터는 Link의 prefetch 속성의 기본값이 true가 아닌 null로 변경됨
+- 근데 왜 프리패치를 하지?
+
+  - `0.4KB`: prefetch 용 가벼운 RSC 페이로드
+    가볍고 간략한 트리 구조 (컴포넌트 식별 및 경로 정보 중심)
+    ```tsx
+      0:{"b":"FpjwF5x23u5gXgGXyAzZj","f":[["children","blog",["blog",{"children":[["category","dev","d"],{"children":["__PAGE__",{}]}]}],null,[null,null],false]],"S":false}
+    ```
+  - `2KB`: 실제 페이지 렌더링을 위한 전체 RSC 페이로드
+    실제 렌더링할 컴포넌트 트리의 상세한 UI 요소 포함
+
+    ```tsx
+    1:"$Sreact.fragment"
+        2:I[32329,[],""]
+        3:I[63725,[],""]
+    ...
+    f:I[22533,[],"AsyncMetadata"]
+    0:{"b":"FpjwF5x23u5gXgGXyAzZj","f":[["children","blog",["blog",{"children":[["category","dev","d"],{"children":["__PAGE__",{}]}]}],["blog",["$","$1","c",{"children":[null,["$","$L2",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L3",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":"$undefined","forbidden":"$undefined","unauthorized":"$undefined"}]]}],{"children":[["category","dev","d"],["$","$1","c",{"children":[null,["$","$L2",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L3",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":"$undefined","forbidden":"$undefined","unauthorized":"$undefined"}]]}],{"children":["**PAGE**",["$","$1","c",{"children":["$L4","$undefined",null,["$","$L5",null,{"children":["$L6","$L7",["$","$L8",null,{"promise":"$@9"}]]}]]}],{},null,false]},null,false]},null,false],["$","$1","h",{"children":[null,["$","$1","vir2V_jCUpC6uiv1OfHnL",{"children":[["$","$La",null,{"children":"$Lb"}],["$","meta",null,{"name":"next-size-adjust","content":""}]]}],[["$","$Lc","vir2V_jCUpC6uiv1OfHnL",{"children":"$Ld"}]],null]}],false]],"S":false}
+    d:["$","$e",null,{"fallback":null,"children":["$","$Lf",null,{"promise":"$@10"}]}]
+    7:null
+    b:[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}]]
+    6:null
+    9:{"metadata":[["$","title","0",{"children":"jerrychu (ì œë¦¬ì¶”) / í”„ë¡ íŠ¸ì—”ë“œ ê°œë°œ ë¸”ë¡œê·¸ ìž‘ì„±ê¸€"}],["$","meta","1",{"name":"description","content":"jerrychu ê°œë°œ ê´€ë ¨ ë¸”ë¡œê·¸ í¬ìŠ¤íŠ¸ ëª¨ìŒ"}],["$","meta","2",{"name":"keywords","content":"jerrychu,ê°œë°œ ë¸”ë¡œê·¸,ì¼ìƒ ë¸”ë¡œê·¸,ë¸”ë¡œê·¸,blog"}],["$","link","3",{"rel":"canonical","href":"https://www.jerrychu.me/blog/dev"}],["$","link","4",{"rel":"alternate","hrefLang":"ko-KR","href":"https://www.jerrychu.me/blog/dev"}],["$","meta","5",{"name":"google-site-verification","content":"YV2XiZ4p2B-EZQUYFMOORXahkH7uzy9A6vm6xZPP_t4"}],["$","meta","6",{"name":"naver-site-verification","content":"cd6fa7075e8d25586ca69d55a9b97c36db3600c6"}],["$","meta","7",{"name":"google-adsense-account","content":"ca-pub-4761019594552611"}],["$","meta","8",{"property":"og:title","content":"jerrychu (ì œë¦¬ì¶”) / í”„ë¡ íŠ¸ì—”ë“œ ê°œë°œ ë¸”ë¡œê·¸ ìž‘ì„±ê¸€"}],["$","meta","9",{"property":"og:description","content":"jerrychu ê°œë°œ ê´€ë ¨ ë¸”ë¡œê·¸ í¬ìŠ¤íŠ¸ ëª¨ìŒ"}],["$","meta","10",{"property":"og:url","content":"https://www.jerrychu.me/blog/dev"}],["$","meta","11",{"property":"og:image","content":"https://avatars.githubusercontent.com/u/68219145?v=4"}],["$","meta","12",{"property":"og:image:alt","content":"jerrychu (ì œë¦¬ì¶”) / í”„ë¡ íŠ¸ì—”ë“œ ê°œë°œ ë¸”ë¡œê·¸ ìž‘ì„±ê¸€"}],["$","meta","13",{"name":"twitter:card","content":"summary_large_image"}],["$","meta","14",{"name":"twitter:title","content":"jerrychu (ì œë¦¬ì¶”) / í”„ë¡ íŠ¸ì—”ë“œ ê°œë°œ ë¸”ë¡œê·¸ ìž‘ì„±ê¸€"}],["$","meta","15",{"name":"twitter:description","content":"jerrychu ê°œë°œ ê´€ë ¨ ë¸”ë¡œê·¸ í¬ìŠ¤íŠ¸ ëª¨ìŒ"}],["$","meta","16",{"name":"twitter:image","content":"https://avatars.githubusercontent.com/u/68219145?v=4"}],["$","meta","17",{"name":"twitter:image:alt","content":"jerrychu (ì œë¦¬ì¶”) / í”„ë¡ íŠ¸ì—”ë“œ ê°œë°œ ë¸”ë¡œê·¸ ìž‘ì„±ê¸€"}],["$","link","18",{"rel":"icon","href":"/favicon.ico","type":"image/x-icon","sizes":"16x16"}]],"error":null,"digest":"$undefined"}
+        10:{"metadata":"$9:metadata","error":null,"digest":"$undefined"}
+    11:I[88168,["669","static/chunks/669-3508ac20516af8cc.js","310","static/chunks/310-2cebae3a6ecc2cfd.js","772","static/chunks/app/blog/%5Bcategory%5D/page-5f31921d3678f399.js"],"BlogTags"]
+    12:I[10748,["669","static/chunks/669-3508ac20516af8cc.js","310","static/chunks/310-2cebae3a6ecc2cfd.js","772","static/chunks/app/blog/%5Bcategory%5D/page-5f31921d3678f399.js"],"BlogPostWrapper"]
+    ...
+    ```
+
+### [**Reducing JS bundle size**](https://nextjs.org/docs/app/getting-started/server-and-client-components#reducing-js-bundle-size)
+
+- 전부 use client를 기입하지 말고 서버로 뺄 수 있는 부분을 빼면 JS Bundle이 감소된다
+
+## [클라이언트 컴포넌트의 자식으로 서버 컴포넌트 보내기](https://nextjs.org/docs/app/getting-started/server-and-client-components#interleaving-server-and-client-components)
+
+서버 컴포넌트를 클라이언트 컴포넌트에 프로퍼티로 전달할 수 있습니다.
+이렇게 하면 클라이언트 컴포넌트 내에 서버 렌더링 UI를 시각적으로 중첩할 수 있습니다.
+
+이 패턴에서는 모든 서버 컴포넌트가 프롭을 포함하여 서버에서 미리 렌더링됩니다.
+결과 RSC 페이로드에는 컴포넌트 트리 내에서 클라이언트 컴포넌트가 렌더링되어야 하는 위치에 대한 참조가 포함됩니다.

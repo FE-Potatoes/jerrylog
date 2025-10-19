@@ -24,7 +24,7 @@ const focusableSelectors = [
  * @param el - 포커스 가능 여부를 판단할 HTML 요소
  * @returns {boolean} - 주어진 요소가 포커스 가능하면 true, 그렇지 않으면 false
  */
-const calIsFocusable = (el: HTMLElement): boolean => {
+export const calIsFocusable = (el: HTMLElement): boolean => {
   const style = getComputedStyle(el);
 
   // display: none, visibility: hidden, 렌더링되지 않음
@@ -72,5 +72,6 @@ export const calGetFocusableElements = (
     const isFocusable = calIsFocusable(element);
     return isFocusable;
   });
+
   return focusableElements;
 };
